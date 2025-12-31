@@ -1,21 +1,12 @@
 # Node / Frontend
 frontend/node_modules/
 frontend/dist/
-frontend/.env
-frontend/.env.local
 
 # Backend (Python / FastAPI)
 backend/__pycache__/
 backend/*.pyc
-backend/.env
 backend/venv/
 backend/.venv/
-
-# General
-.env
-.env.*
-*.log
-.DS_Store
 
 # Docker
 docker-compose.override.yml
