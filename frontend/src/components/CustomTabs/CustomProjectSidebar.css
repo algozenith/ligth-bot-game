@@ -1,0 +1,151 @@
+/* =============================
+   SIDEBAR PANEL
+============================= */
+.proj-sidebar {
+  width: 250px;
+  height: 100%; /* 🔥 keeps sidebar height fixed */
+
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  background: rgba(4, 7, 18, 0.85);
+  border-right: 1px solid rgba(70, 85, 110, 0.35);
+  backdrop-filter: blur(6px);
+
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
+
+  overflow: hidden; /* 🔥 prevents sidebar itself from stretching */
+}
+
+/* =============================
+   HEADER
+============================= */
+.sidebar-header {
+  font-size: 14px;
+  font-weight: 700;
+  color: #dbeafe;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  flex-shrink: 0; /* 🔥 header never shrinks */
+}
+
+.add-btn {
+  width: 28px;
+  height: 28px;
+
+  border-radius: 8px;
+  border: 1px solid #38bdf8;
+  background: rgba(56, 189, 248, 0.15);
+
+  font-size: 16px;
+  font-weight: 700;
+  color: #bae6fd;
+
+  cursor: pointer;
+  transition: 0.22s ease;
+}
+
+.add-btn:hover {
+  background: rgba(56, 189, 248, 0.3);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+/* =============================
+   LEVEL LIST (Scrollable)
+============================= */
+.sidebar-list {
+  flex: 1; /* 🔥 takes remaining space */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  overflow-y: auto; /* 🔥 scrolling happens here */
+  min-height: 0; /* Important: prevents growth beyond container */
+}
+
+/* pretty scroll */
+.sidebar-list::-webkit-scrollbar {
+  width: 5px;
+}
+.sidebar-list::-webkit-scrollbar-thumb {
+  background: rgba(56, 189, 248, 0.5);
+  border-radius: 4px;
+}
+.sidebar-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* =============================
+   LEVEL CARD
+============================= */
+.sidebar-item {
+  padding: 10px 12px;
+
+  font-size: 13px;
+  font-weight: 500;
+  color: #d1d5db;
+
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid rgba(30, 41, 59, 0.6);
+  border-radius: 10px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.sidebar-item:hover {
+  border-color: #60a5fa;
+  box-shadow:
+    0 0 14px rgba(96, 165, 250, 0.35),
+    inset 0 0 8px rgba(96, 165, 250, 0.18);
+}
+
+/* ACTIVE ITEM */
+.sidebar-item.active {
+  background: rgba(59, 130, 246, 0.4);
+  border-color: #3b82f6;
+  color: #f8fafc;
+  font-weight: 700;
+  box-shadow:
+    0 0 15px rgba(59, 130, 246, 0.5),
+    inset 0 0 10px rgba(59, 130, 246, 0.25);
+}
+
+/* TRIM LONG NAMES */
+.level-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* ✕ button */
+.close-btn {
+  opacity: 0;
+  border: none;
+  background: none;
+
+  font-size: 14px;
+  font-weight: 700;
+  color: #fca5a5;
+
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.sidebar-item:hover .close-btn {
+  opacity: 1;
+}
+
+.close-btn:hover {
+  color: #fecaca;
+  transform: scale(1.15);
+}

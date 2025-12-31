@@ -1,0 +1,70 @@
+/* COMMAND PALETTE GRID */
+.cmd-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Always 4 per row */
+  gap: 4px;                     /* smaller gap */
+
+  padding: 4px;                 /* reduced padding */
+  background: rgba(6, 10, 22, 0.55);
+  border: 1px solid rgba(30, 45, 65, 0.55);
+  border-radius: 10px;
+}
+
+/* BUTTONS */
+.cmd-item {
+  height: 38px;                 /* slightly smaller */
+  border-radius: 7px;
+
+  background: #101a2d;
+  border: 1px solid rgba(70, 85, 110, 0.45);
+  color: #e2e8f0;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Icon scaling */
+  padding: 0;                   /* 🔥 removes wasted space */
+
+  font-size: 0;                 /* hide text size so icon takes control */
+  overflow: hidden;
+
+  transition: 0.18s ease;
+}
+
+/* ICON IMAGES & SVGs inside button */
+.cmd-item img,
+.cmd-item svg {
+  width: 85%;                   /* 🔥 maximize usable area */
+  height: 85%;
+  object-fit: contain;
+}
+
+/* If button uses emoji instead of <img> */
+.cmd-item:not(:has(img)):not(:has(svg)) {
+  font-size: 22px;              /* huge emoji */
+}
+
+/* Hover */
+.cmd-item:hover:not(:disabled) {
+  border-color: #7dd3fc;
+  background: rgba(125, 211, 252, 0.24);
+  transform: translateY(-1px);
+}
+
+/* Active selected tool */
+.cmd-item.active {
+  background: rgba(56, 189, 248, 0.4);
+  border-color: #38bdf8;
+  color: #f0f9ff;
+  transform: scale(1.07);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.45);
+}
+
+/* Disabled state */
+.cmd-item:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

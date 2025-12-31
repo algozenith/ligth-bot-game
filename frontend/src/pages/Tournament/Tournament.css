@@ -1,0 +1,34 @@
+.tournament-container {
+  /* Takes up the full screen height */
+  height: 100vh;
+  width: 100%;
+  
+  /* Centers the content vertically and horizontally */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+  /* Simple dark theme (change colors as needed) */
+  background-color: #121212;
+  color: #ffffff;
+  font-family: sans-serif;
+}
+
+.content {
+  text-align: center;
+}
+
+.content h1 {
+  font-size: 4rem;
+  margin: 0;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.content p {
+  font-size: 1.5rem;
+  margin-top: 10px;
+  color: #888; /* Gray text for contrast */
+  letter-spacing: 5px;
+  text-transform: uppercase;
+}

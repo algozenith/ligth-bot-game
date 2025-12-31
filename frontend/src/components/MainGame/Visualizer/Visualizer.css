@@ -1,0 +1,445 @@
+/* ===========================
+   VISUALIZER PANEL CONTAINER
+=========================== */
+
+.visualizer-panel {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 14px;
+  background: #030712;
+  border: 1px solid rgba(148,163,184,0.12);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.55);
+}
+
+.visualizer-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #e2e8f0;
+  letter-spacing: 0.4px;
+}
+
+/* ===========================
+   GRID WRAPPER
+=========================== */
+
+.visualizer-grid {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr); /* overridden inline by gridSize */
+  gap: 6px;
+  padding: 8px;
+  border-radius: 16px;
+  background: #0a0f1f;
+  user-select: none;
+}
+
+/* ===========================
+   TILE BASE
+=========================== */
+
+.vis-cell {
+  position: relative;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111827;
+  border: 1px solid #1e293b;
+  transition:
+    transform 0.2s ease-out,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.vis-editable {
+  cursor: pointer;
+}
+
+.vis-cell:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 0 14px rgba(59,130,246,0.45),
+    0 0 4px rgba(59,130,246,0.35) inset;
+}
+
+/* ===========================
+   HEIGHT VISUALS
+=========================== */
+
+.vis-h1,
+.vis-h2,
+.vis-h3 {
+  background: #1e293b;
+  box-shadow:
+    0 3px 4px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(31,41,55,0.8);
+}
+
+.vis-h1 { transform: translateY(-2px); }
+.vis-h2 { transform: translateY(-4px); }
+.vis-h3 { transform: translateY(-6px); }
+
+.vis-height-badge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  background: rgba(0,0,0,0.45);
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #f3f4f6;
+  pointer-events: none;
+  text-shadow: 0 0 4px rgba(0,0,0,0.6);
+}
+
+/* ===========================
+   GOAL TILES
+=========================== */
+
+.vis-goal {
+  border-color: #38bdf8;
+  background: #0c4a6e;
+}
+
+.vis-goal .vis-goal-icon {
+  font-size: 20px;
+  filter: drop-shadow(0 0 8px rgba(14,165,233,0.75));
+}
+
+.vis-goal:not(.vis-goal-lit) {
+  background: radial-gradient(circle, #fbbf24 0%, #78350f 60%, #111827 100%);
+  border-color: #fbbf24;
+  animation: unlitPulse 1.4s infinite ease-in-out;
+}
+
+.vis-goal-lit {
+  background: radial-gradient(circle, #10b981 0%, #065f46 60%, #111827 100%);
+  border-color: #34d399;
+  box-shadow:
+    0 0 20px rgba(16,185,129,0.85),
+    0 0 4px rgba(71,85,105,0.5) inset;
+  animation: litPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes litPulse {
+  0%,100% { box-shadow: 0 0 20px rgba(16,185,129,0.8); }
+  50% { box-shadow: 0 0 26px rgba(16,185,129,1); }
+}
+
+@keyframes unlitPulse {
+  0%,100% { opacity: 0.85; }
+  50% { opacity: 1; }
+}
+
+/* ===========================
+   SELECTED TILE (optional)
+=========================== */
+
+.vis-active {
+  outline: 3px solid #3b82f6;
+  outline-offset: -3px;
+}
+
+/* ===========================
+   ROBOT
+=========================== */
+
+.vis-robot {
+  font-size: 24px;
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.85));
+  transition: transform 0.25s ease;
+  z-index: 3;
+}
+
+/* Teleport blink for robot */
+.vis-robot-teleport {
+  animation: robotBlink 0.65s ease-in-out;
+}
+
+@keyframes robotBlink {
+  0% { opacity: 1; transform: scale(1); }
+  40% { opacity: 0; transform: scale(0.4); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ===========================
+   TELEPORT LABELS
+=========================== */
+
+.vis-teleport {
+  position: relative;
+}
+
+.tp-start-icon,
+.tp-end-icon {
+  position: absolute;
+  font-weight: bold;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #ffffff;
+  filter: drop-shadow(0 0 6px rgba(0,0,0,0.75));
+  z-index: 5;
+  pointer-events: none;
+}
+
+.tp-start-icon { top: 4px; right: 4px; }
+.tp-end-icon { bottom: 4px; right: 4px; }
+
+/* Teleport extra (optional legacy) */
+.vis-teleport-exit {
+  box-shadow: 0 0 10px rgba(80, 160, 255, 0.9);
+  position: relative;
+}
+
+.vis-teleport-entry {
+  box-shadow: 0 0 6px rgba(80, 200, 255, 0.7);
+  position: relative;
+}
+
+.vis-teleport-exit-icon {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  font-size: 1.1rem;
+}
+
+.vis-teleport-entry-label {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.6);
+  color: #fff;
+}
+
+/* ===============================
+   TELEPORT FX (Square style)
+=============================== */
+
+.teleport-start {
+  position: absolute;
+  width: 75%;
+  height: 75%;
+  left: 12.5%;
+  top: 12.5%;
+  border-radius: 12px;
+  background: rgba(0, 150, 255, 0.35);
+  animation: tpSuction 0.45s ease-out forwards;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.teleport-end {
+  position: absolute;
+  width: 78%;
+  height: 78%;
+  left: 11%;
+  top: 11%;
+  border-radius: 14px;
+  border: 2.5px solid rgba(0, 200, 255, 0.85);
+  animation: tpExplosion 0.55s ease-out forwards;
+  z-index: 4;
+  pointer-events: none;
+  box-shadow:
+    0 0 12px rgba(0,200,255,0.65),
+    0 0 4px rgba(0,200,255,0.45) inset;
+}
+
+@keyframes tpSuction {
+  0% { transform: scale(1); opacity: 0.9; }
+  100% { transform: scale(0.35); opacity: 0; }
+}
+
+@keyframes tpExplosion {
+  0% { transform: scale(0.25); opacity: 0.5; }
+  55% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+/* =========================
+   🚡 ELEVATOR — WIND STRIPE
+========================= */
+
+.vis-elevator {
+  position: relative;
+  box-shadow: 0 0 6px rgba(56, 189, 248, 0.35) inset;
+}
+
+/* Main overlay */
+.elevator-overlay {
+  position: absolute;
+  inset: 5px;
+  border-radius: 6px;
+  opacity: 0.7;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* Base stripe */
+.elevator-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.9;
+}
+
+/* RIGHT — horizontal */
+.elevator-right .elevator-overlay::before {
+  background-image: linear-gradient(90deg,
+    transparent 0%,
+    rgba(56, 189, 248, 0.0) 30%,
+    rgba(56, 189, 248, 0.9) 50%,
+    rgba(56, 189, 248, 0.0) 70%,
+    transparent 100%
+  );
+  transform: translateX(-110%);
+  animation: elevatorRightFlow 0.9s linear infinite;
+}
+
+/* LEFT — horizontal reversed */
+.elevator-left .elevator-overlay::before {
+  background-image: linear-gradient(90deg,
+    transparent 0%,
+    rgba(56, 189, 248, 0.0) 30%,
+    rgba(56, 189, 248, 0.9) 50%,
+    rgba(56, 189, 248, 0.0) 70%,
+    transparent 100%
+  );
+  transform: translateX(110%);
+  animation: elevatorLeftFlow 0.9s linear infinite;
+}
+
+/* DOWN — vertical */
+.elevator-down .elevator-overlay::before {
+  background-image: linear-gradient(180deg,
+    transparent 0%,
+    rgba(56, 189, 248, 0.0) 30%,
+    rgba(56, 189, 248, 0.9) 50%,
+    rgba(56, 189, 248, 0.0) 70%,
+    transparent 100%
+  );
+  transform: translateY(-110%);
+  animation: elevatorDownFlow 0.9s linear infinite;
+}
+
+/* UP — vertical reversed */
+.elevator-up .elevator-overlay::before {
+  background-image: linear-gradient(180deg,
+    transparent 0%,
+    rgba(56, 189, 248, 0.0) 30%,
+    rgba(56, 189, 248, 0.9) 50%,
+    rgba(56, 189, 248, 0.0) 70%,
+    transparent 100%
+  );
+  transform: translateY(110%);
+  animation: elevatorUpFlow 0.9s linear infinite;
+}
+
+/* Animations */
+@keyframes elevatorRightFlow {
+  0% { transform: translateX(-110%); }
+  100% { transform: translateX(110%); }
+}
+
+@keyframes elevatorLeftFlow {
+  0% { transform: translateX(110%); }
+  100% { transform: translateX(-110%); }
+}
+
+@keyframes elevatorDownFlow {
+  0% { transform: translateY(-110%); }
+  100% { transform: translateY(110%); }
+}
+
+@keyframes elevatorUpFlow {
+  0% { transform: translateY(110%); }
+  100% { transform: translateY(-110%); }
+}
+
+.vis-h-neg {
+  background-color: #25223a; /* darker "underground" color */
+}
+
+.vis-h-neg .vis-height-badge {
+  background-color: #3b2f70;
+  color: #fff;
+}
+
+/* ===========================
+   ROBOT DIRECTION ARROW
+=========================== */
+
+.vis-robot-dir {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  width: 18px;
+  height: 18px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 18px;
+  color: #60a5fa; /* bright blue */
+  text-shadow: 0 0 4px rgba(0,0,0,0.75);
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0.9;
+  transform-origin: center center;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+/* Optional hover improvement */
+.vis-cell:hover .vis-robot-dir {
+  opacity: 1;
+}
+
+.vis-robot-dir {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+  width: 18px;
+  height: 18px;
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 18px;
+  color: #60a5fa;
+  text-shadow: 0 0 4px rgba(0,0,0,0.75);
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0.95;
+  transform-origin: center center;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.vis-cell:hover .vis-robot-dir {
+  opacity: 1;
+}
+.elevator-dir-arrow {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #38bdf8;
+  text-shadow: 0 0 6px rgba(56,189,248,0.85);
+  pointer-events: none;
+  z-index: 7;
+  opacity: 0.95;
+  transform-origin: center center;
+  transition: opacity 0.15s ease;
+}
+
+.vis-cell:hover .elevator-dir-arrow {
+  opacity: 1;
+}

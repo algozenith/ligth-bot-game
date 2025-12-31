@@ -1,0 +1,85 @@
+/* ----------------------------------------------------
+   GLOBAL RESET
+---------------------------------------------------- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+
+html,
+body,
+#root {
+  height: 100%;
+  background: #0a0f1d;
+  color: #e5e7eb;
+  font-family: Inter, system-ui, sans-serif;
+  overflow: hidden; /* hide scrollbars */
+}
+
+/* ----------------------------------------------------
+   MAIN APP STRUCTURE
+---------------------------------------------------- */
+.app-root {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.app-main {
+  flex: 1;
+
+  /* FLEX instead of grid → allows responsive resizing */
+  display: flex;
+  flex-direction: row;
+
+  padding: 10px;
+  gap: 10px;
+
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* ----------------------------------------------------
+   LEFT SIDEBAR (OPEN/CLOSE)
+---------------------------------------------------- */
+
+/* Expanded sidebar */
+.sidebar-open {
+  width: 240px;
+  min-width: 240px;
+  transition: width 0.25s ease;
+}
+
+/* Collapsed sidebar */
+.sidebar-closed {
+  width: 60px;
+  min-width: 60px;
+  transition: width 0.25s ease;
+}
+
+/* ----------------------------------------------------
+   CENTER VISUALIZER EXPANSION
+---------------------------------------------------- */
+.visualizer-container {
+  flex: 1;
+  min-width: 0;               /* prevents overflow when shrinking */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+/* ----------------------------------------------------
+   RIGHT SIDEBAR (PROGRAM PANELS)
+---------------------------------------------------- */
+.right-sidebar {
+  width: 340px;
+  min-width: 340px;
+  flex-shrink: 0;             /* prevents collapsing */
+  overflow-y: auto;
+  padding-right: 4px;         /* gap for scrollbar */
+}
+

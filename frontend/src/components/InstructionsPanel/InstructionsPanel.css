@@ -1,0 +1,233 @@
+/* =========================================================
+   1. Theme Variables (Clean Dark UI)
+   ========================================================= */
+:root {
+  --bg-overlay: rgba(0, 0, 0, 0.7);
+  --bg-panel: #16181d;
+  --bg-header: #1e2129;
+  --bg-section: #1b1e26;
+  --bg-hover: #222633;
+
+  --border-soft: #2a2f3a;
+
+  --text-main: #e6e8ee;
+  --text-muted: #a9afbf;
+  --text-accent: #5da9ff;
+
+  --font-main: system-ui, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "JetBrains Mono", Consolas, monospace;
+}
+
+/* =========================================================
+   2. Overlay & Panel
+   ========================================================= */
+.inst-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--bg-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.inst-box {
+  width: min(900px, 95vw);
+  height: min(90vh, 900px);
+  background: var(--bg-panel);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* =========================================================
+   3. Header
+   ========================================================= */
+.inst-header {
+  background: var(--bg-header);
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.inst-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.inst-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.inst-close:hover {
+  color: var(--text-main);
+}
+
+/* =========================================================
+   4. Scrollable Content
+   ========================================================= */
+.inst-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+/* Two column layout on wide screens */
+.inst-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .inst-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   5. Sections
+   ========================================================= */
+.inst-section {
+  background: var(--bg-section);
+  border-radius: 10px;
+  border: 1px solid var(--border-soft);
+  overflow: hidden;
+}
+
+.inst-section + .inst-section {
+  margin-top: 16px;
+}
+
+.inst-section h3 {
+  margin: 0;
+  padding: 14px 18px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: linear-gradient(
+    to right,
+    rgba(93, 169, 255, 0.15),
+    transparent
+  );
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.inst-section p,
+.inst-section ol {
+  padding: 16px 18px;
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.inst-section ol {
+  padding-left: 36px;
+}
+
+/* =========================================================
+   6. Lists & Commands
+   ========================================================= */
+.inst-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.inst-section li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--border-soft);
+  transition: background 0.15s;
+}
+
+.inst-section li:hover {
+  background: var(--bg-hover);
+}
+
+/* Command badge */
+.cmd-badge {
+  min-width: 44px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-accent);
+  background: rgba(93, 169, 255, 0.15);
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+/* =========================================================
+   7. Special Mechanics Grid
+   ========================================================= */
+.mechanic-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.mechanic-item {
+  display: flex;
+  gap: 14px;
+  padding: 14px 18px;
+  border-top: 1px solid var(--border-soft);
+  transition: background 0.15s;
+}
+
+.mechanic-item:hover {
+  background: var(--bg-hover);
+}
+
+.mechanic-item strong {
+  min-width: 36px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+.mechanic-item span {
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* =========================================================
+   8. Editor Mode Highlight
+   ========================================================= */
+.editor-section h3 {
+  background: linear-gradient(
+    to right,
+    rgba(255, 200, 0, 0.2),
+    transparent
+  );
+  color: #ffd54f;
+}
+
+/* =========================================================
+   9. Scrollbar
+   ========================================================= */
+.inst-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.inst-content::-webkit-scrollbar-thumb {
+  background: #2c3140;
+  border-radius: 6px;
+}
+
+.inst-content::-webkit-scrollbar-track {
+  background: transparent;
+}

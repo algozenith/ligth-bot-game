@@ -1,0 +1,99 @@
+/* TOP BAR WRAPPER */
+.topbar {
+  width: 100%;
+  height: 70px;
+
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+
+  padding: 10px 26px;
+  background: rgba(10, 15, 31, 0.85);
+  border-bottom: 1px solid rgba(75, 85, 105, 0.25);
+  backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 3px 12px rgba(10, 20, 32, 0.45),
+    inset 0 -1px 0 rgba(56, 189, 248, 0.08);
+
+  z-index: 100;
+  position: sticky;
+  top: 0;
+}
+
+/* SIDE SECTIONS */
+.topbar-left {
+  justify-self: flex-start;
+}
+
+.topbar-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.topbar-right {
+  justify-self: flex-end;
+}
+
+/* LOGO STYLE */
+.topbar-logo {
+  font-size: 18px;
+  font-weight: 800;
+  color: #38bdf8;
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.55);
+  font-family: "Orbitron", sans-serif;
+}
+
+/* LEVEL LABEL (small text above title) */
+.level-label {
+  font-size: 11px;
+  color: #94a3b8;
+  letter-spacing: 1px;
+  margin-bottom: 2px;
+}
+
+/* LEVEL NAME */
+.level-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #f1f5f9;
+  text-shadow: 0 0 6px rgba(255,255,255,0.08);
+}
+
+/* CTA BUTTON */
+.topbar-create-btn {
+  cursor: pointer;
+  padding: 8px 18px;
+  border-radius: 10px;
+
+  background: linear-gradient(135deg, #2563ebbb 0%, #1e40af 100%);
+  color: #eaf2ff;
+  font-size: 14px;
+  font-weight: 600;
+  border: 1px solid #3b82f6aa;
+  letter-spacing: 0.4px;
+
+  box-shadow:
+    0 0 10px rgba(37, 99, 235, 0.28),
+    inset 0 0 8px rgba(37, 99, 235, 0.25);
+
+  transition:
+    background 0.22s ease,
+    transform 0.18s ease,
+    box-shadow 0.22s ease;
+}
+
+/* Hover + Active States */
+.topbar-create-btn:hover {
+  background: #3b82f6;
+  box-shadow:
+    0 0 16px rgba(59, 130, 246, 0.55),
+    inset 0 0 12px rgba(59, 130, 246, 0.45);
+  transform: translateY(-2px);
+}
+
+.topbar-create-btn:active {
+  transform: scale(0.95);
+}

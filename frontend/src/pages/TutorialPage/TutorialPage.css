@@ -1,0 +1,231 @@
+/* Put this where your curtain CSS lives. */
+
+/* customization vars */
+:root{
+  --curtain-color-1: #0f0f11;    /* dark base */
+  --curtain-color-2: #1b1b1d;    /* subtle gradient */
+  --curtain-accent: rgba(255,255,255,0.03); /* fabric sheen */
+  --curtain-seam: rgba(0,0,0,0.45);
+  --success-color: #00ff88;
+  --success-glow: 0 10px 40px rgba(0,255,136,0.28);
+  --curtain-duration: 1200ms;
+  --success-duration: 1400ms;
+  --curtain-ease: cubic-bezier(.22,.9,.3,1);
+}
+
+/* Visualizer container must be positioned and provide perspective */
+.visualizer-wrapper {
+  position: relative;
+  flex-grow: 1;
+  overflow: hidden;
+  border-radius: 10px;
+  perspective: 1200px; /* for subtle 3D on curtain */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Curtain container — covers visualizer */
+.curtain {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 200; /* high but below UI overlays if any */
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+}
+
+/* shared panel styles */
+.curtain-left,
+.curtain-right {
+  position: relative;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  box-shadow: inset 0 -40px 60px rgba(0,0,0,0.55), 0 10px 40px rgba(0,0,0,0.55);
+  border-radius: 0; /* set on wrapper if needed */
+  transform-origin: center;
+  transform: translateZ(0); /* promote to its own layer */
+  transition: transform var(--curtain-duration) var(--curtain-ease), box-shadow 600ms;
+}
+
+/* fabric gradient + micro texture */
+.curtain-left::before,
+.curtain-right::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(255,255,255,0.01), transparent 6%),
+    radial-gradient(circle at 90% 90%, rgba(255,255,255,0.01), transparent 6%),
+    linear-gradient(180deg, var(--curtain-color-1) 0%, var(--curtain-color-2) 100%),
+    repeating-linear-gradient(90deg, rgba(255,255,255,0.01) 0 1px, rgba(0,0,0,0.01) 1px 4px);
+  background-blend-mode: overlay, overlay, normal, overlay;
+  opacity: 1;
+}
+
+/* seam / fold line toward centre to imply two panels */
+.curtain-left::after,
+.curtain-right::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: linear-gradient(180deg, rgba(0,0,0,0.2), rgba(255,255,255,0.02));
+  right: -3px; /* seam at inner edge for left panel */
+  pointer-events: none;
+}
+
+/* right panel seam flips position */
+.curtain-right::after { left: -3px; right: auto; }
+
+/* sheen sweep (animated) — subtle highlight that passes across panels */
+.curtain-left::marker, .curtain-right::marker { display:none; } /* defensive */
+
+/* shimmer overlay — uses transform to sweep */
+.curtain-shimmer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 25; /* above panels but below success text */
+  overflow: hidden;
+}
+
+/* shimmer stripe that travels left→right (low opacity for subtlety) */
+.curtain-shimmer::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -40%;
+  width: 60%;
+  height: 160%;
+  background: linear-gradient(120deg, rgba(255,255,255,0.00) 0%, rgba(255,255,255,0.06) 45%, rgba(255,255,255,0.00) 80%);
+  transform: rotate(-18deg) translateX(-120%);
+  filter: blur(10px);
+  animation: curtainShimmer 2200ms linear infinite;
+  opacity: 0.9;
+}
+
+/* move shimmer only when curtains are moving (we'll pause via JS or when curtain is open) */
+@keyframes curtainShimmer {
+  0%   { transform: rotate(-18deg) translateX(-120%); }
+  50%  { transform: rotate(-18deg) translateX(0%); }
+  100% { transform: rotate(-18deg) translateX(120%); }
+}
+
+/* CLOSED state — panels cover center (default) */
+.curtain-left { transform: translateX(0) rotateY(0deg); }
+.curtain-right { transform: translateX(0) rotateY(0deg); }
+
+/* OPEN state — panels fly outward with slight 3D rotate */
+.curtain.open .curtain-left {
+  transform: translateX(-102%) rotateY(-6deg);
+  box-shadow: inset 0 -30px 40px rgba(0,0,0,0.4);
+}
+.curtain.open .curtain-right {
+  transform: translateX(102%) rotateY(6deg);
+  box-shadow: inset 0 -30px 40px rgba(0,0,0,0.4);
+}
+
+/* when curtain is closing (optional class to emphasize motion) */
+.curtain.closing .curtain-left {
+  transition-duration: calc(var(--curtain-duration) * 0.9);
+  transform: translateX(0) rotateY(0deg);
+}
+.curtain.closing .curtain-right {
+  transition-duration: calc(var(--curtain-duration) * 0.9);
+  transform: translateX(0) rotateY(0deg);
+}
+
+/* --------------------------
+   SUCCESS TEXT ON CURTAIN
+   Appears above panels while curtain is closing
+----------------------------- */
+.curtain-success-text {
+  position: absolute;
+  inset: 0;
+  z-index: 400; /* above everything inside visualizer */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(28px, 4.6vw, 56px); /* responsive */
+  font-weight: 800;
+  color: var(--success-color);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 12px rgba(0,255,136,0.18),
+    0 6px 20px rgba(0,0,0,0.55);
+  transform-origin: center;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+  animation: curtainSuccessIn var(--success-duration) var(--curtain-ease) forwards;
+}
+
+/* subtle outlines / stroke using filter */
+.curtain-success-text::after {
+  content: "";
+  position: absolute;
+  inset: 18% 12% 12% 12%;
+  z-index: -1;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.02));
+  filter: blur(8px) saturate(120%);
+  opacity: 0.18;
+}
+
+/* shimmer sweep across the success text */
+.curtain-success-text .highlight {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.28) 45%, rgba(255,255,255,0) 75%);
+  transform: translateX(-120%) skewX(-12deg);
+  animation: successShine 900ms ease-out 120ms forwards;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* small pop / scale + hold then fade animation */
+@keyframes curtainSuccessIn {
+  0%   { opacity: 0; transform: scale(0.86) translateY(6px) blur(2px); }
+  20%  { opacity: 1; transform: scale(1.02) translateY(0) blur(0); }
+  70%  { opacity: 1; transform: scale(1) translateY(0) blur(0); }
+  100% { opacity: 0; transform: scale(1.06) translateY(-6px) blur(1px); }
+}
+
+@keyframes successShine {
+  0%   { transform: translateX(-120%) skewX(-12deg); opacity: 0; }
+  40%  { transform: translateX(-10%) skewX(-12deg); opacity: 1; }
+  100% { transform: translateX(120%) skewX(-12deg); opacity: 0; }
+}
+
+/* --------------------------
+   Accessibility: respect reduced motion
+----------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .curtain-left,
+  .curtain-right,
+  .curtain,
+  .curtain-shimmer::before,
+  .curtain-success-text,
+  .curtain-success-text .highlight {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .curtain.open .curtain-left,
+  .curtain.open .curtain-right {
+    transform: translateX(-100%) !important;
+  }
+
+  .curtain-success-text { opacity: 1; transform: none; }
+}
+
+/* --------------------------
+   Small utility tweaks
+----------------------------- */
+.curtain-left, .curtain-right { /* inner padding for a softer edge */
+  padding: 0.6rem 0;
+}

@@ -1,0 +1,145 @@
+/* TileMenu.css */
+
+.tile-menu {
+  position: fixed;
+  background: #1e1e24; /* Dark background to match app theme */
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 6px; /* Slightly tighter padding */
+  border-radius: 6px;
+  z-index: 99999;
+  
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* Reduced gap for compactness */
+  min-width: 190px;
+
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  animation: menuFadeIn 0.1s ease-out;
+  color: #fff;
+}
+
+/* Standard menu button */
+.menu-btn,
+.tile-menu-close {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  color: #eee;
+  border: 1px solid transparent;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem; /* 12px */
+  font-weight: 500;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Ensure text aligns left */
+  
+  transition: all 0.15s ease;
+}
+
+.menu-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  transform: translateX(2px);
+}
+
+/* Close button styling */
+.tile-menu-close {
+  background: rgba(255, 71, 87, 0.1);
+  border: 1px solid rgba(255, 71, 87, 0.2);
+  color: #ff6b81;
+  justify-content: center;
+  margin-top: 4px;
+  font-weight: 700;
+  padding: 4px 0;
+}
+
+.tile-menu-close:hover {
+  background: #ff4757;
+  color: #fff;
+  border-color: #ff4757;
+  transform: none;
+}
+
+/* Grouped compact rows */
+.row-group {
+  display: flex;
+  width: 100%;
+  gap: 4px;
+  align-items: center;
+}
+
+/* Label inside row groups */
+.menu-label-btn {
+  font-size: 0.7rem;
+  color: #aaa;
+  flex: 1;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding-left: 4px;
+}
+
+/* Mini buttons (height / arrows) */
+.mini-btn {
+  flex: 0 0 26px; /* Slightly smaller square */
+  height: 26px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ccc;
+  font-size: 0.9rem;
+  padding: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.15s ease;
+}
+
+.mini-btn:hover {
+  background: rgba(0, 210, 255, 0.2);
+  border-color: rgba(0, 210, 255, 0.5);
+  color: #fff;
+}
+
+/* Separator line */
+.menu-separator {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 2px 0;
+  width: 100%;
+}
+
+/* --- LOCKED STATE --- */
+.menu-btn.locked {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  color: #777;
+  cursor: not-allowed;
+  padding: 5px 8px;
+  justify-content: space-between;
+}
+
+.menu-btn.locked:hover {
+  background: rgba(0, 0, 0, 0.25);
+  transform: none;
+  border-color: rgba(255, 71, 87, 0.25);
+}
+
+.lock-badge {
+  font-size: 0.6rem;
+  background: rgba(255, 71, 87, 0.1);
+  color: #ff6b81;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 700;
+  border: 1px solid rgba(255, 71, 87, 0.2);
+}
+
+@keyframes menuFadeIn {
+  from { opacity: 0; transform: scale(0.95) translateY(-5px);}
+  to   { opacity: 1; transform: scale(1) translateY(0);}
+}

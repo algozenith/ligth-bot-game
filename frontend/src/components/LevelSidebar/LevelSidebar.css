@@ -1,0 +1,161 @@
+/* ===========================
+   SIDEBAR BASE
+=========================== */
+.level-sidebar {
+  height: 100%;
+  background: #020617;
+  border-right: 1px solid #1e293b;
+  transition: width 0.28s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.level-sidebar.open {
+  width: 240px;
+  min-width: 240px;
+}
+
+.level-sidebar.closed {
+  width: 52px;
+  min-width: 52px;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 10px;
+  font-size: 13px;
+  color: #e2e8f0;
+}
+
+.sidebar-header .title {
+  font-weight: 600;
+  color: #f8fafc;
+}
+
+.sidebar-toggle {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+
+  background: #111827;
+  border: 1px solid #334155;
+  color: #e2e8f0;
+  border-radius: 6px;
+
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: 0.2s;
+}
+
+.sidebar-toggle:hover {
+  border-color: #38bdf8;
+  background: #1e293b;
+}
+
+/* Hide title text when collapsed */
+.level-sidebar.closed .sidebar-header .title {
+  display: none;
+}
+
+/* ===========================
+   SCROLLABLE LIST
+=========================== */
+.sidebar-content {
+  flex: 1;
+  padding: 6px;
+
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.sidebar-content::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===========================
+   LEVEL CELL
+=========================== */
+.level-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 8px;
+  border-radius: 10px;
+
+  font-size: 12px;
+  color: #e5e7eb;
+  cursor: pointer;
+  border: 1px solid #111827;
+
+  background: linear-gradient(140deg, #0b1120, #020617);
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  transition: 0.2s ease;
+}
+
+.level-item:hover {
+  border-color: #22d3ee;
+  background: #1e293b;
+}
+
+.level-item.active {
+  background: #312e81;
+  border-color: #818cf8;
+  box-shadow: 0 0 18px rgba(99,102,241,0.35);
+}
+
+/* Compact center align when collapsed */
+.level-sidebar.closed .level-item {
+  justify-content: center;
+}
+
+/* Numbers + Icons */
+.level-id {
+  color: #60a5fa;
+  font-weight: 600;
+}
+
+.done {
+  color: #22c55e;
+  margin-left: auto;
+}
+
+/* Empty / loading */
+.empty-msg {
+  padding: 12px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.level-item.locked {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.level-item.unlocked {
+  cursor: pointer;
+}
+
+.lock-icon {
+  color: red;
+  margin-left: auto;
+}
+
+.unlock-icon {
+  color: green;
+  margin-left: auto;
+}
