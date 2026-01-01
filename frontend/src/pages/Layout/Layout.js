@@ -1,5 +1,6 @@
 import React from "react";
 import { useMusic } from "../../context/MusicContext";
+import "./AudioWidget.css";
 
 // 🎵 The Persistent Audio Widget
 const AudioWidget = () => {

@@ -1,114 +1,211 @@
-.replay-container {
-    width: 100vw;
-    height: 100vh;
-    background: black;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    position: relative;
-    font-family: "Courier New", monospace;
+/* =========================================================
+   SCOPED STYLES FOR REPLAY PAGE
+   ID: #replay-page-root ensures strict isolation
+   ========================================================= */
+
+/* Main Container */
+#replay-page-root {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh; /* Mobile viewport fix */
+  background: black;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  font-family: "Courier New", monospace;
+  color: white;
 }
 
-.replay-loading {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #00ff00;
-    font-family: monospace;
-    font-size: 1.5rem;
-    background: black;
+/* Loading Screen */
+#replay-page-root .replay-loading {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #00ff00;
+  font-family: monospace;
+  font-size: 1.5rem;
+  background: black;
+  text-align: center;
 }
 
-/* HEADER */
-.replay-header {
-    height: 60px;
-    background: rgba(0, 20, 0, 0.9);
+/* --- HEADER --- */
+#replay-page-root .replay-header {
+  height: 60px;
+  flex-shrink: 0;
+  background: rgba(0, 20, 0, 0.95);
+  border-bottom: 1px solid #00ff00;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 30;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+}
+
+#replay-page-root .rec-indicator {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ff0000;
+  font-weight: bold;
+  font-size: 1.2rem;
+  animation: replay-blink 1s infinite;
+  text-shadow: 0 0 5px red;
+}
+
+#replay-page-root .rec-dot {
+  width: 12px; height: 12px;
+  background: red; border-radius: 50%;
+  box-shadow: 0 0 8px red;
+}
+
+#replay-page-root .replay-info { 
+  color: #00ff00; font-size: 0.9rem; text-align: center; 
+  text-shadow: 0 0 5px #00ff00;
+}
+
+#replay-page-root .btn-close-replay {
+  background: transparent;
+  border: 1px solid #00ff00;
+  color: #00ff00;
+  padding: 6px 16px;
+  cursor: pointer;
+  font-family: monospace;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+#replay-page-root .btn-close-replay:hover { 
+  background: rgba(0, 255, 0, 0.2); 
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
+}
+
+@keyframes replay-blink { 50% { opacity: 0; } }
+
+/* --- WORKSPACE (Layout Hub) --- */
+#replay-page-root .replay-workspace {
+  flex: 1;
+  display: flex;
+  flex-direction: row; /* Desktop: Side-by-Side */
+  overflow: hidden;
+  position: relative;
+  min-height: 0;
+}
+
+/* Scanline Overlay */
+#replay-page-root .replay-workspace::after {
+  content: " "; display: block; position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 25; 
+  background-size: 100% 2px, 3px 100%;
+  pointer-events: none;
+}
+
+/* Visualizer Area */
+#replay-page-root .replay-visualizer-wrapper {
+  flex: 1; 
+  position: relative;
+  background: radial-gradient(circle at center, #0a150a, #000);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+}
+
+/* --- SIDEBAR WRAPPER (Right Panel) --- */
+#replay-page-root .replay-sidebar-wrapper {
+  width: 360px; /* Desktop Fixed Width */
+  height: 100%;
+  flex-shrink: 0;
+  border-left: 1px solid #00ff00;
+  background: rgba(0, 20, 0, 0.9);
+  position: relative;
+  z-index: 20;
+  overflow-y: auto;
+  
+  /* Flex Column for Desktop */
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- BOTTOM CONTROLS --- */
+#replay-page-root .replay-controls {
+  flex-shrink: 0;
+  border-top: 1px solid #00ff00;
+  background: #000;
+  z-index: 35;
+}
+
+
+/* =========================================================
+   🔥 GLOBAL COMPONENT OVERRIDES (CRITICAL FIX) 🔥
+   This forces the inner RightSidebar to ALWAYS fill the wrapper
+   regardless of screen size, removing the 330px limit.
+   ========================================================= */
+#replay-page-root .right-sidebar {
+  width: 100% !important;
+  max-width: none !important;
+  flex: 1 !important;
+  border: none !important;
+  background: transparent !important;
+  margin: 0 !important;
+}
+
+/* Green Hacker Filter for Code Blocks inside Replay */
+#replay-page-root .right-sidebar > * {
+  filter: sepia(100%) hue-rotate(50deg) saturate(300%) contrast(1.1);
+  border-color: #004400 !important; 
+}
+
+
+/* =========================================================
+   🔥 RESPONSIVE: VERTICAL STACK (< 960px) 🔥
+   ========================================================= */
+@media (max-width: 960px) {
+  
+  /* 1. Stack Elements Vertically */
+  #replay-page-root .replay-workspace {
+    flex-direction: column !important;
+  }
+
+  /* 2. Visualizer on Top (Fixed Height 45vh) */
+  #replay-page-root .replay-visualizer-wrapper {
+    flex: none !important;
+    width: 100% !important;
+    height: 45vh !important;
     border-bottom: 1px solid #00ff00;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 30px;
-    z-index: 10;
+  }
+
+  /* 3. Sidebar Wrapper on Bottom */
+  #replay-page-root .replay-sidebar-wrapper {
+    width: 100% !important;
+    max-width: none !important;
+    flex: 1 !important; /* Fill remaining height */
+    height: auto !important;
+    border-left: none;
+    padding: 0 !important;
+    background: rgba(0, 20, 0, 0.9);
+  }
+
+  /* 4. TRANSFORM INNER SIDEBAR TO 2x2 GRID */
+  #replay-page-root .right-sidebar {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 6px;
+    padding: 6px !important;
+    height: 100% !important;
+  }
+
+  /* 5. Header Tweaks */
+  #replay-page-root .replay-header {
+    height: 50px;
+    padding: 0 10px;
+  }
+  #replay-page-root .rec-indicator span { display: none; }
 }
-
-.rec-indicator {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: #ff0000;
-    font-weight: bold;
-    font-size: 1.2rem;
-    animation: blink 1s infinite;
-}
-
-.rec-dot { width: 15px; height: 15px; background: red; border-radius: 50%; }
-
-.replay-info { color: #00ff00; font-size: 0.8rem; text-align: center; }
-
-.btn-close-replay {
-    background: transparent;
-    border: 1px solid #00ff00;
-    color: #00ff00;
-    padding: 5px 15px;
-    cursor: pointer;
-    font-family: monospace;
-    font-weight: bold;
-}
-.btn-close-replay:hover { background: rgba(0, 255, 0, 0.2); }
-
-/* --- WORKSPACE LAYOUT (Split Screen) --- */
-.replay-workspace {
-    flex: 1;
-    display: flex;
-    overflow: hidden;
-    position: relative;
-}
-
-/* Scanline Overlay over entire workspace */
-.replay-workspace::after {
-    content: " ";
-    display: block;
-    position: absolute;
-    top: 0; left: 0; bottom: 0; right: 0;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    z-index: 20; 
-    background-size: 100% 2px, 3px 100%;
-    pointer-events: none;
-}
-
-/* Visualizer Area (Takes all remaining space) */
-.replay-visualizer-wrapper {
-    flex: 1; /* CHANGED: Was flex: 7. Now takes all space not used by sidebar */
-    position: relative;
-    background: radial-gradient(circle at center, #0a150a, #000);
-}
-
-/* Sidebar Area (Fixed Width) */
-.replay-sidebar-wrapper {
-    /* CHANGED: Removed flex: 3. Added fixed width. */
-    width: 360px; 
-    flex-shrink: 0; 
-    
-    border-left: 1px solid #00ff00;
-    background: rgba(0, 20, 0, 0.8);
-    position: relative;
-    z-index: 5;
-    
-    /* Fix for inner content alignment */
-    box-sizing: border-box; 
-    overflow-y: auto;
-}
-
-/* Force Green Tint on Sidebar for "Night Vision" effect */
-.replay-sidebar-wrapper .program-area {
-    filter: sepia(100%) hue-rotate(50deg) saturate(300%) contrast(1.2);
-}
-
-.replay-controls {
-    flex-shrink: 0;
-    border-top: 1px solid #00ff00;
-    background: #000;
-}
-
-@keyframes blink { 50% { opacity: 0; } }

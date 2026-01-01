@@ -1,4 +1,5 @@
 import React from "react";
+import "./Popup.css";
 
 const Popup = ({ message, type, onConfirm, onCancel }) => (
     <div className="popup-overlay" onClick={onCancel}>

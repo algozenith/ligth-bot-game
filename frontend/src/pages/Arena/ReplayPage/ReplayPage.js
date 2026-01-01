@@ -30,9 +30,8 @@ export default function ReplayPage() {
         () => {} 
     );
 
-    // --- 1. HANDLE MUSIC (Enter & Exit Logic) ---
+    // --- 1. HANDLE MUSIC ---
     useEffect(() => {
-        // A. ENTERING: Set music to the Replay's specific track
         if (replayData) {
             const historicalMusic = replayData.level_config?.music;
             if (historicalMusic) {
@@ -43,19 +42,13 @@ export default function ReplayPage() {
                 setMusicTrack("cyber_theme_01");
             }
         }
-
-        // B. EXITING: Restore the logged-in user's base music
         return () => {
-            console.log("Exiting Replay: Restoring user music...");
-            // Check if the user has a specific track set in their base
             const userBaseMusic = user?.base?.level?.music;
-            
-            // Fallback to default if user has no base music
             setMusicTrack(userBaseMusic || "cyber_theme_01");
         };
-    }, [replayData, levelData, setMusicTrack, user]); // Added 'user' to deps so we have latest user data on exit
+    }, [replayData, levelData, setMusicTrack, user]); 
 
-    // --- 2. LOAD LEVEL DATA ---
+    // --- 2. LOAD DATA ---
     useEffect(() => {
         if (!replayData) {
             alert("No replay data found.");
@@ -71,7 +64,6 @@ export default function ReplayPage() {
             }
 
             console.warn("Snapshot missing. Fetching live base data...");
-            
             let targetUsername = "";
             if (replayData.type === 'ATTACK') {
                 targetUsername = replayData.opponent;
@@ -107,7 +99,7 @@ export default function ReplayPage() {
         loadLevel();
     }, [replayData, navigate, token, user]);
 
-    // --- 3. SYNC & RUN REPLAY ---
+    // --- 3. SYNC LOGIC ---
     useEffect(() => {
         if (levelData && game.updateGridSize) {
             game.updateGridSize(levelData.gridSize);
@@ -128,7 +120,7 @@ export default function ReplayPage() {
     }, [levelData]); 
 
     if (loading) return (
-        <div className="replay-container">
+        <div id="replay-page-root">
             <div className="replay-loading text-cyan">
                 ACCESSING ARCHIVES... <br/>
                 <span style={{fontSize:'0.8em', color:'#666'}}>Reconstructing Simulation</span>
@@ -137,7 +129,7 @@ export default function ReplayPage() {
     );
 
     return (
-        <div className="replay-container">
+        <div id="replay-page-root">
             {/* HEADER */}
             <div className="replay-header">
                 <div className="rec-indicator">
@@ -150,15 +142,14 @@ export default function ReplayPage() {
                         : `DEFENSE AGAINST: ${replayData.opponent.toUpperCase()}`
                     }
                 </div>
-                {/* Clicking this triggers the 'return' cleanup function above */}
                 <button className="btn-close-replay" onClick={() => navigate("/arena")}>
-                    CLOSE ARCHIVE
+                    CLOSE
                 </button>
             </div>
 
             {/* MAIN WORKSPACE */}
             <div className="replay-workspace">
-                {/* LEFT COLUMN: VISUALIZER */}
+                {/* LEFT: VISUALIZER */}
                 <div className="replay-visualizer-wrapper">
                     {use3D ? (
                         <Visualizer3D
@@ -186,7 +177,7 @@ export default function ReplayPage() {
                     )}
                 </div>
 
-                {/* RIGHT COLUMN: READ-ONLY COMMANDS */}
+                {/* RIGHT: COMMANDS */}
                 <div className="replay-sidebar-wrapper">
                     <div className="replay-overlay-blocker"></div> 
                     <RightSidebar 
@@ -208,7 +199,7 @@ export default function ReplayPage() {
                     showSubmit={false} 
                     showSave={false}
                     isRunning={game.isRunning}
-                    message={"REPLAY MODE: ARCHIVE FOOTAGE"}
+                    message={"ARCHIVE FOOTAGE"}
                     speed={game.speed} 
                     setSpeed={game.setSpeed}
                     use3D={use3D}
@@ -217,7 +208,7 @@ export default function ReplayPage() {
                 />
             </div>
 
-            {/* INSTRUCTIONS PANEL */}
+            {/* HELP MODAL */}
             {showInstructions && (
                 <InstructionsPanel
                     mode="game"

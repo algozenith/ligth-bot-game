@@ -1,0 +1,168 @@
+/* =========================================
+   EDIT MODE STYLES (Command Deck)
+   ========================================= */
+
+.base-page-root .edit-mode-wrapper {
+  width: 100vw; height: 100vh; height: 100dvh; 
+  display: flex; flex-direction: column; background: #131318; overflow: hidden;
+}
+
+.base-page-root .edit-main-column {
+  width: 100%; height: 100%; display: flex; flex-direction: column;
+}
+
+/* --- TOP BAR --- */
+.base-page-root .edit-top-bar {
+  background: rgba(20, 20, 25, 0.95); 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0 25px; 
+  flex-shrink: 0; height: 80px;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5); 
+  z-index: 100;
+  position: relative;
+}
+
+/* --- LEFT GROUP: Level + Name --- */
+.base-page-root .bar-left-group { 
+  display: flex; align-items: center; gap: 15px; flex: 1; min-width: 0; margin-right: 20px; 
+}
+
+.base-page-root .level-hud-badge {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, #00d2ff, #3a7bd5); width: 55px; height: 55px;
+  border-radius: 12px; box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+  border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0;
+}
+.base-page-root .level-hud-label { font-size: 0.6rem; font-weight: 800; color: rgba(0,0,0,0.5); line-height: 1; margin-bottom: 2px; }
+.base-page-root .level-hud-val { font-size: 1.6rem; font-weight: 900; color: #fff; line-height: 0.9; }
+
+.base-page-root .name-input-wrapper { display: flex; flex-direction: column; width: 100%; max-width: 250px; position: relative; }
+
+.base-page-root .edit-title-input {
+  background: transparent; border: none; border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  color: #fff; font-size: 1.4rem; font-weight: 600; padding: 5px 0;
+  width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;
+  transition: all 0.3s ease;
+}
+.base-page-root .edit-title-input:focus { outline: none; border-bottom-color: #00d2ff; background: rgba(255,255,255,0.05); text-overflow: clip; }
+
+/* --- MIDDLE GROUP: Controls --- */
+.base-page-root .bar-section.controls {
+  display: flex; align-items: center; background: rgba(255,255,255,0.05);
+  padding: 6px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.1); gap: 25px;
+}
+.base-page-root .control-group { display: flex; flex-direction: row; align-items: center; gap: 12px; }
+.base-page-root .bar-label { font-size: 0.7rem; color: #888; letter-spacing: 1px; text-transform: uppercase; font-weight: 700; white-space: nowrap; }
+
+.base-page-root .v-sep { width: 1px; height: 20px; background: rgba(255,255,255,0.15); }
+
+/* Music Dropdown Styling */
+.base-page-root .music-select {
+  background: transparent; border: none; color: #00d2ff; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  -webkit-appearance: none; appearance: none; /* Remove default arrow */
+  padding-right: 15px; text-align: center;
+}
+.base-page-root .music-select option { background: #1a1a2e; color: #fff; }
+.base-page-root .music-select:focus { outline: none; text-decoration: underline; }
+
+/* Grid Tabs */
+.base-page-root .grid-tabs { display: flex; background: rgba(0,0,0,0.4); border-radius: 20px; padding: 2px; gap: 2px; }
+.base-page-root .btn-grid-tab {
+  background: transparent; border: none; color: #666; font-size: 0.8rem; padding: 4px 12px; cursor: pointer; border-radius: 15px; font-weight: bold; transition: 0.2s;
+}
+.base-page-root .btn-grid-tab:hover { color: #fff; }
+.base-page-root .btn-grid-tab.active { background: #00d2ff; color: #000; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+
+/* --- RIGHT GROUP: Actions --- */
+.base-page-root .bar-section.actions { display: flex; gap: 10px; align-items: center; }
+
+/* Load Button */
+.base-page-root .btn-drafts-load {
+  background: rgba(243, 156, 18, 0.1); color: var(--accent-orange); border: 1px solid rgba(243, 156, 18, 0.3);
+  padding: 8px 14px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.85rem;
+  display: flex; align-items: center; gap: 8px; transition: all 0.2s; white-space: nowrap;
+}
+.base-page-root .btn-drafts-load:hover { background: var(--accent-orange); color: #000; box-shadow: 0 0 10px rgba(243, 156, 18, 0.3); }
+
+/* Exit Button */
+.base-page-root .btn-cancel-edit {
+  background: transparent; color: #888; border: 1px solid #444; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: all 0.2s;
+}
+.base-page-root .btn-cancel-edit:hover { border-color: var(--accent-red); color: var(--accent-red); }
+
+/* --- WORKSPACE LAYOUT (Desktop Default) --- */
+.base-page-root .edit-workspace {
+  flex: 1; 
+  overflow: hidden; 
+  display: flex; 
+  flex-direction: row; /* Side by side on Desktop */
+  position: relative;
+  background: radial-gradient(circle at center, #1a1a20 0%, #0e0e12 100%); 
+  min-height: 0;
+}
+
+/* Ensure the Sidebar overrides its own width on Desktop if needed, 
+   but usually right-sidebar handles itself. Here we just ensure flex works. */
+.base-page-root .edit-workspace > .right-sidebar {
+  flex-shrink: 0;
+  height: 100%;
+}
+
+.base-page-root .edit-bottom-bar-wrapper { flex-shrink: 0; z-index: 20; border-top: 1px solid rgba(255,255,255,0.1); }
+
+
+/* =========================================
+   🔥 RESPONSIVE: MOBILE & TABLET (< 960px) 🔥
+   ========================================= */
+@media (max-width: 960px) {
+  
+  /* 1. Stack Workspace Vertically */
+  .base-page-root .edit-workspace {
+    flex-direction: column !important;
+  }
+
+  /* 2. Visualizer (Top Half) */
+  /* Target the first child (Visualizer2D or Visualizer3D) */
+  .base-page-root .edit-workspace > :first-child {
+    flex: none !important;
+    width: 100% !important;
+    height: 45vh !important; /* Fixed height for the map */
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* 3. Command Palette (Bottom Half) */
+  .base-page-root .edit-workspace > .right-sidebar {
+    width: 100% !important;
+    max-width: none !important; /* Remove desktop width limits */
+    flex: 1 !important; /* Fill remaining height */
+    height: auto !important;
+    border-left: none !important;
+  }
+
+  /* 4. Top Bar Adjustments */
+  .base-page-root .edit-top-bar { 
+    height: 60px; 
+    padding: 0 10px; 
+    overflow-x: auto; /* Scroll horizontally if buttons overflow */
+    overflow-y: hidden; 
+    justify-content: flex-start; /* Align left to allow scroll */
+  }
+  
+  /* Prevent items from crushing */
+  .base-page-root .bar-left-group, 
+  .base-page-root .bar-section { 
+    flex-shrink: 0; 
+  }
+  
+  /* Text & Badge Sizing */
+  .base-page-root .name-input-wrapper { max-width: 150px; }
+  .base-page-root .edit-title-input { font-size: 1rem; }
+  .base-page-root .level-hud-badge { width: 40px; height: 40px; }
+  .base-page-root .level-hud-val { font-size: 1.2rem; }
+  .base-page-root .level-hud-label { font-size: 0.5rem; }
+  
+  /* Hide labels to save space */
+  .base-page-root .control-group .bar-label { display: none; } 
+  .base-page-root .btn-drafts-load span { display: none; } /* Hide folder icon */
+}

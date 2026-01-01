@@ -1,118 +1,180 @@
 /* Inherit Global Dark Theme but add Red Accents */
 .attack-page-container {
-    width: 100vw;
-    height: 100vh;
-    background: radial-gradient(circle at 50% 50%, #2e1e1e 0%, #080505 100%);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    color: white;
+  width: 100vw;
+  height: 100vh;
+  /* 🔥 FIX: Dynamic Viewport Height for Mobile Browsers (Chrome/Safari) */
+  height: 100dvh; 
+  background: radial-gradient(circle at 50% 50%, #2e1e1e 0%, #080505 100%);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: white;
 }
 
 .text-red { color: #ff4d4d; }
 
 /* --- TOP BAR --- */
 .attack-top-bar {
-    height: 60px;
-    background: rgba(40, 10, 10, 0.95);
-    border-bottom: 2px solid #ff4d4d;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-    box-shadow: 0 0 20px rgba(255, 77, 77, 0.2);
-    z-index: 10;
+  height: 60px;
+  background: rgba(40, 10, 10, 0.95);
+  border-bottom: 2px solid #ff4d4d;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.2);
+  z-index: 10;
+  flex-shrink: 0;
 }
 
 .attack-status {
-    color: #ff4d4d;
-    font-weight: bold;
-    letter-spacing: 2px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.9rem;
+  color: #ff4d4d;
+  font-weight: bold;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
 }
 
 .blinking-dot {
-    width: 10px; height: 10px;
-    background: #ff4d4d;
-    border-radius: 50%;
-    animation: blink 1s infinite;
+  width: 10px; height: 10px;
+  background: #ff4d4d;
+  border-radius: 50%;
+  animation: blink 1s infinite;
 }
 
 @keyframes blink { 50% { opacity: 0; } }
 
 .target-info {
-    color: #aaa;
-    font-family: monospace;
-    font-size: 1.1rem;
+  color: #aaa;
+  font-family: monospace;
+  font-size: 1.1rem;
+  /* Prevent long names breaking layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px; 
 }
 
 .target-name {
-    color: white;
-    font-weight: bold;
-    text-shadow: 0 0 10px rgba(255,255,255,0.5);
+  color: white;
+  font-weight: bold;
+  text-shadow: 0 0 10px rgba(255,255,255,0.5);
 }
 
 .btn-retreat {
-    background: transparent;
-    border: 1px solid #666;
-    color: #888;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
+  background: transparent;
+  border: 1px solid #666;
+  color: #888;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+  white-space: nowrap;
 }
 
 .btn-retreat:hover {
-    border-color: #ff4d4d;
-    color: #ff4d4d;
+  border-color: #ff4d4d;
+  color: #ff4d4d;
 }
 
-/* --- WORKSPACE --- */
+/* --- WORKSPACE (Responsive Layout Hub) --- */
 .attack-workspace {
-    flex: 1;
-    display: flex;
-    position: relative;
-    overflow: hidden;
+  flex: 1;
+  display: flex;
+  flex-direction: row; /* Desktop: Side-by-Side */
+  position: relative;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .attack-visualizer-wrapper {
-    flex: 1;
-    position: relative;
-    /* Red glow behind the game board */
-    box-shadow: inset 0 0 100px rgba(255, 0, 0, 0.05); 
+  flex: 1;
+  position: relative;
+  /* Red glow behind the game board */
+  box-shadow: inset 0 0 100px rgba(255, 0, 0, 0.05);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
 }
 
 .attack-bottom-wrapper {
-    flex-shrink: 0;
+  flex-shrink: 0;
+  z-index: 20;
 }
+
+
+/* =========================================
+   🔥 MOBILE OPTIMIZATION (< 960px) 🔥
+   Matches TutorialPage behavior
+   ========================================= */
+@media (max-width: 960px) {
+  /* 1. Stack: Visualizer Top, Code Bottom */
+  .attack-workspace {
+    flex-direction: column;
+  }
+
+  /* 2. Visualizer Height */
+  .attack-visualizer-wrapper {
+    flex: 1; /* Takes available top space */
+    min-height: 35vh; /* Ensure at least 35% height */
+    border-bottom: 1px solid rgba(255, 77, 77, 0.2);
+  }
+
+  /* 3. Top Bar Cleanup */
+  .attack-top-bar {
+    padding: 0 10px;
+    height: 50px;
+  }
+  
+  .attack-status span {
+    display: none; /* Hide text "ATTACKING" */
+  }
+  
+  .target-info {
+    font-size: 0.9rem;
+    max-width: 120px;
+  }
+}
+
+/* Very Small Screens */
+@media (max-width: 450px) {
+  .btn-retreat {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+}
+
 
 /* --- RESULT MODAL --- */
 .battle-modal-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background: rgba(0,0,0,0.85);
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: fadeIn 0.5s;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.85);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.5s;
+  backdrop-filter: blur(4px);
 }
 
 .battle-modal-content {
-    background: #1a1a1a;
-    width: 500px;
-    padding: 40px;
-    border-radius: 12px;
-    text-align: center;
-    border: 2px solid #333;
-    box-shadow: 0 20px 60px black;
-    transform: scale(0.9);
-    animation: popIn 0.3s forwards;
+  background: #1a1a1a;
+  width: 90%;          /* 🔥 Responsive Width */
+  max-width: 500px;
+  padding: 30px;       /* Slightly reduced padding */
+  border-radius: 12px;
+  text-align: center;
+  border: 2px solid #333;
+  box-shadow: 0 20px 60px black;
+  transform: scale(0.9);
+  animation: popIn 0.3s forwards;
 }
 
 @keyframes popIn { to { transform: scale(1); } }
@@ -121,366 +183,127 @@
 .battle-modal-content.loss { border-color: #ff4d4d; box-shadow: 0 0 30px rgba(255, 77, 77, 0.2); }
 
 .battle-title {
-    font-size: 2.5rem;
-    margin: 0 0 30px 0;
-    font-weight: 800;
-    letter-spacing: 2px;
+  font-size: 2rem;     /* Adjusted font size */
+  margin: 0 0 20px 0;
+  font-weight: 800;
+  letter-spacing: 2px;
 }
 
 .win .battle-title { color: #00ff88; text-shadow: 0 0 20px rgba(0,255,136,0.5); }
 .loss .battle-title { color: #ff4d4d; text-shadow: 0 0 20px rgba(255,77,77,0.5); }
 
 .battle-stats {
-    background: rgba(255,255,255,0.05);
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 30px;
+  background: rgba(255,255,255,0.05);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
 }
 
 .loot-row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-    padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 8px;
+  font-family: 'Courier New', monospace;
 }
 
 .text-gold { color: #f1c40f; font-weight: bold; }
 .text-green { color: #2ecc71; font-weight: bold; }
 .text-red { color: #e74c3c; font-weight: bold; }
 
-.total-trophies {
-    margin-top: 10px;
-    color: #aaa;
-    font-size: 0.9rem;
-}
-
 .btn-leave-arena {
-    background: white;
-    color: black;
-    border: none;
-    padding: 15px 40px;
-    font-size: 1.2rem;
-    font-weight: bold;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: transform 0.2s;
+  background: white;
+  color: black;
+  border: none;
+  padding: 12px 0; /* Full width button */
+  width: 100%;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: transform 0.2s;
 }
 
 .btn-leave-arena:hover {
-    transform: scale(1.05);
+  transform: scale(1.02);
 }
 
-/* --- Top Bar Actions --- */
-.top-bar-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.btn-logs {
-    background: #1a1a2e;
-    border: 1px solid #444;
-    color: #ccc;
-    padding: 5px 15px;
-    cursor: pointer;
-    font-family: 'Courier New', monospace;
-    transition: 0.2s;
-}
-.btn-logs:hover {
-    background: #252540;
-    color: #fff;
-    border-color: #00d2ff;
-}
-
-/* --- Log Overlay (The Modal) --- */
+/* --- LOG OVERLAY (The Modal) --- */
 .log-overlay-backdrop {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 2000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 2000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(3px);
 }
 
 .log-overlay-panel {
-    width: 500px;
-    max-height: 80vh;
-    background: #0d0d15;
-    border: 1px solid #333;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 0 20px rgba(0,0,0,0.8);
+  width: 95%;           /* 🔥 Mobile Friendly Width */
+  max-width: 600px;
+  max-height: 80vh;     /* Prevent overflow off screen */
+  background: #0d0d15;
+  border: 1px solid #444;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 30px rgba(0,0,0,0.9);
 }
 
 .log-header {
-    padding: 15px;
-    border-bottom: 1px solid #333;
-    background: #151520;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #eee;
-    font-family: monospace;
-    font-size: 1.1rem;
+  padding: 15px;
+  border-bottom: 1px solid #333;
+  background: #151520;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #eee;
+  font-family: monospace;
+  font-size: 1.1rem;
 }
 
 .close-logs {
-    background: none;
-    border: none;
-    color: #666;
-    cursor: pointer;
-    font-size: 1.2rem;
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 1.5rem; /* Larger touch target */
+  padding: 0 10px;
 }
 .close-logs:hover { color: #fff; }
 
 .log-list {
-    overflow-y: auto;
-    padding: 10px;
+  overflow-y: auto;
+  padding: 10px;
+  background: #0a0a0f;
 }
 
-.log-loading, .no-logs {
-    padding: 20px;
-    text-align: center;
-    color: #666;
-    font-family: monospace;
-}
-
-/* --- THE DIFF COLORS (Attack vs Defense) --- */
+/* Log Entries */
 .log-entry {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    border-bottom: 1px solid #222;
-    background: #111;
-    margin-bottom: 4px;
-    border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #1a1a20;
+  background: #111;
+  margin-bottom: 6px;
+  border-radius: 4px;
 }
 
-/* 1. ATTACK (Cyan/Blue Theme) */
-.log-entry.type-attack {
-    border-left: 4px solid #00d2ff; /* CYAN BAR */
-}
-.text-cyan { color: #00d2ff; font-weight: bold; }
+/* Log Colors */
+.log-entry.mode-attacking { border-left: 4px solid #00e5ff; }
+.log-entry.mode-being-attacked { border-left: 4px solid #ff3333; background: rgba(255, 51, 51, 0.05); }
 
-/* 2. DEFENSE (Orange/Red Theme) */
-.log-entry.type-defense {
-    border-left: 4px solid #ff4444; /* RED BAR */
-}
-.text-orange { color: #ff4444; font-weight: bold; }
-
-/* Text Utils */
-.log-icon { font-size: 1.2rem; margin-right: 12px; }
 .log-info { flex: 1; display: flex; flex-direction: column; }
-.log-main-text { font-family: monospace; font-size: 0.9rem; }
-.log-sub-text { font-size: 0.75rem; color: #666; margin-top: 2px; }
-.log-loot { color: #ffd700; font-weight: bold; font-family: monospace; }
-
-/* --- TOP BAR BUTTONS --- */
-.top-bar-actions {
-    display: flex;
-    gap: 10px;
-}
-
-.btn-logs {
-    background: #1a1a2e;
-    border: 1px solid #444;
-    color: #ccc;
-    padding: 6px 16px;
-    cursor: pointer;
-    font-family: 'Courier New', monospace;
-    font-weight: bold;
-    transition: 0.2s;
-    border-radius: 4px;
-}
-.btn-logs:hover {
-    background: #252540;
-    color: #fff;
-    border-color: #00d2ff;
-    box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
-}
-
-/* --- LOG OVERLAY --- */
-.log-overlay-backdrop {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.85); /* Darker backdrop */
-    z-index: 2000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    backdrop-filter: blur(3px);
-}
-
-.log-overlay-panel {
-    width: 600px;
-    max-height: 80vh;
-    background: #0d0d15;
-    border: 1px solid #444;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 0 30px rgba(0,0,0,0.9);
-}
-
-.log-header {
-    padding: 15px;
-    border-bottom: 1px solid #333;
-    background: #151520;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: #eee;
-    font-family: monospace;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-}
-
-.close-logs {
-    background: none;
-    border: none;
-    color: #666;
-    cursor: pointer;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-.close-logs:hover { color: #fff; }
-
-.log-list {
-    overflow-y: auto;
-    padding: 10px;
-    background: #0a0a0f;
-}
-
-.log-loading, .no-logs {
-    padding: 30px;
-    text-align: center;
-    color: #555;
-    font-family: monospace;
-}
-
-/* --- LOG ENTRIES (THE IMPORTANT PART) --- */
-.log-entry {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px;
-    border-bottom: 1px solid #1a1a20;
-    background: #111;
-    margin-bottom: 6px;
-    border-radius: 4px;
-    transition: transform 0.1s;
-}
-.log-entry:hover {
-    background: #16161c;
-}
-
-/* === 1. MODE: ATTACKING OTHERS (Cyan/Blue Theme) === */
-.log-entry.mode-attacking {
-    border-left: 5px solid #00e5ff; /* Bright Cyan Bar */
-}
-
-.log-entry.mode-attacking .log-main-text {
-    color: #00e5ff; /* Cyan Text */
-}
-
-.log-entry.mode-attacking .log-icon {
-    filter: drop-shadow(0 0 5px rgba(0, 229, 255, 0.4));
-}
-
-.target-highlight {
-    color: #fff;
-    font-weight: bold;
-}
-
-
-/* === 2. MODE: BEING ATTACKED (Red/Danger Theme) === */
-.log-entry.mode-being-attacked {
-    border-left: 5px solid #ff3333; /* Bright Red Bar */
-    background: rgba(255, 51, 51, 0.05); /* Slight red tint */
-}
-
-.log-entry.mode-being-attacked .log-main-text {
-    color: #ff3333; /* Red Text */
-}
-
-.log-entry.mode-being-attacked .log-icon {
-    filter: drop-shadow(0 0 5px rgba(255, 51, 51, 0.4));
-}
-
-.enemy-highlight {
-    color: #fff;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-
-/* --- Common Text Utils --- */
-.log-icon { font-size: 1.4rem; margin-right: 15px; width: 30px; text-align: center; }
-.log-info { flex: 1; display: flex; flex-direction: column; }
-.log-main-text { font-family: 'Consolas', monospace; font-size: 0.95rem; font-weight: bold; }
+.log-main-text { font-family: 'Consolas', monospace; font-size: 0.9rem; font-weight: bold; }
 .log-sub-text { font-size: 0.75rem; color: #777; margin-top: 4px; }
-.log-date { color: #555; }
+.log-icon { font-size: 1.2rem; margin-right: 15px; min-width: 25px; text-align: center; }
 
-.log-loot { 
-    font-weight: bold; 
-    font-family: monospace; 
-    font-size: 0.9rem; 
-}
-.loot-gain { color: #ffd700; } /* Gold */
-.loot-loss { color: #ff6b6b; } /* Red */
-
-/* Timer Styling */
-.timer-display {
-    background: rgba(0, 0, 0, 0.5);
-    padding: 5px 15px;
-    border-radius: 4px;
-    border: 1px solid #333;
-    min-width: 120px;
-    text-align: center;
-}
-
-.text-cyan {
-    color: #00f0ff;
-    text-shadow: 0 0 5px #00f0ff;
-}
-
-.text-red-alert {
-    color: #ff0000;
-    animation: pulseRed 1s infinite;
-    text-shadow: 0 0 5px #ff0000;
-}
-
-@keyframes pulseRed {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-}
-
-/* Modal Improvements */
-.loot-row {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 8px;
-    font-family: 'Courier New', monospace;
-}
-
-.highlight-row {
-    border-top: 1px solid rgba(255,255,255,0.2);
-    margin-top: 10px;
-    padding-top: 10px;
-    font-weight: bold;
-    font-size: 1.2rem;
-}
-
-.coin-row {
-    margin-top: 5px;
-    font-size: 1.1rem;
-}
-
-.text-gold {
-    color: #ffd700;
-    text-shadow: 0 0 5px #ffd700;
+/* Logs Mobile Tweak */
+@media (max-width: 600px) {
+  .log-main-text { font-size: 0.8rem; }
+  .log-icon { margin-right: 10px; font-size: 1rem; }
 }
