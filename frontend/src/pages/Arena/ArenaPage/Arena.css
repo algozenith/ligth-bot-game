@@ -607,3 +607,57 @@
     background: rgba(0, 242, 255, 0.1) !important;
     border-left: 4px solid #00f2ff;
 }
+
+/* --- TECH HEART & LIVES DISPLAY --- */
+
+/* The Container */
+.lives-display-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(15px);
+  padding: 0 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 77, 77, 0.5);
+  box-shadow: 0 0 20px rgba(255, 77, 77, 0.15), inset 0 0 8px rgba(255, 77, 77, 0.1);
+  height: 42px; /* Synced with other buttons */
+  box-sizing: border-box;
+  margin-right: 15px; /* Spacing between this and other buttons */
+}
+
+/* The SVG Icon Sizing */
+.tech-heart {
+  width: 22px;
+  height: 22px;
+  filter: drop-shadow(0 0 5px var(--neon-red));
+}
+
+/* The SVG Paths */
+.heart-outer { 
+  stroke: var(--neon-red); 
+  stroke-width: 1.5; 
+  fill: none; 
+}
+
+.heart-inner { 
+  fill: var(--neon-red); 
+  opacity: 0.3; 
+  animation: techPulse 2s infinite; 
+}
+
+/* The Number Text */
+.lives-count {
+  color: #fff;
+  font-weight: 900;
+  font-size: 1.2rem;
+  font-family: 'Share Tech Mono', monospace; /* Or 'Courier New', monospace if font missing */
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+  line-height: 1;
+}
+
+/* The Animation */
+@keyframes techPulse {
+  0%, 100% { transform: scale(1); opacity: 0.3; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+}

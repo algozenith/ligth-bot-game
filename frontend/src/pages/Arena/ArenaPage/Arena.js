@@ -103,32 +103,22 @@ export default function Arena() {
                 <button className="btn-back-home" onClick={() => navigate("/")}>← MAIN MENU</button>
                 
                 <div className="arena-social-buttons">
-                    {/* Stylish Lives Display */}
                     {userStats && (
-                        <div className="lives-display-badge" title="Daily Energy" style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                            background: "linear-gradient(145deg, #2b2b2b, #1a1a1a)",
-                            padding: "6px 16px",
-                            borderRadius: "50px",
-                            border: "1px solid rgba(255, 77, 77, 0.3)",
-                            boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
-                            marginRight: "15px",
-                            height: "36px"
-                        }}>
-                            <span style={{ 
-                                fontSize: "1.2rem", 
-                                filter: "drop-shadow(0 0 2px rgba(255, 77, 77, 0.8))" 
-                            }}>❤️</span>
-                            <span style={{ 
-                                color: "#fff", 
-                                fontWeight: "700", 
-                                fontSize: "1.1rem",
-                                fontFamily: "'Segoe UI', Roboto, sans-serif"
-                            }}>
-                                {userStats.lives}
-                            </span>
+                        <div className="lives-display-badge" title="Daily Energy">
+                            {/* The Tech Heart SVG */}
+                            <svg className="tech-heart" viewBox="0 0 24 24" fill="none">
+                                <path 
+                                    className="heart-outer" 
+                                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" 
+                                />
+                                <path 
+                                    className="heart-inner" 
+                                    d="M12 18l-1-1c-3.5-3-6-5.5-6-8.5 0-2 1.5-3.5 3.5-3.5 1.2 0 2.3.6 3 1.5.7-.9 1.8-1.5 3-1.5 2 0 3.5 1.5 3.5 3.5 0 3-2.5 5.5-6 8.5l-1 1z" 
+                                />
+                            </svg>
+                            
+                            {/* The Number */}
+                            <span className="lives-count">{userStats.lives}</span>
                         </div>
                     )}
 

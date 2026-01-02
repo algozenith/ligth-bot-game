@@ -5,12 +5,16 @@
   height: 100%;
   background: #020617;
   border-right: 1px solid #1e293b;
-  transition: width 0.28s ease;
+  /* Smooth transition for width and slide animations */
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  z-index: 1000;
+  position: relative;
 }
 
+/* Desktop: Width Toggling */
 .level-sidebar.open {
   width: 240px;
   min-width: 240px;
@@ -28,38 +32,39 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding: 10px;
+  min-height: 50px;
   font-size: 13px;
   color: #e2e8f0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .sidebar-header .title {
   font-weight: 600;
   color: #f8fafc;
+  white-space: nowrap;
 }
 
+/* Standard Toggle Button (Inside Header) */
 .sidebar-toggle {
   width: 28px;
   height: 28px;
   padding: 0;
-
   background: #111827;
   border: 1px solid #334155;
   color: #e2e8f0;
   border-radius: 6px;
-
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-
   transition: 0.2s;
 }
 
 .sidebar-toggle:hover {
   border-color: #38bdf8;
   background: #1e293b;
+  color: #38bdf8;
 }
 
 /* Hide title text when collapsed */
@@ -72,10 +77,10 @@
 =========================== */
 .sidebar-content {
   flex: 1;
-  padding: 6px;
-
+  padding: 8px;
   overflow-y: auto;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 .sidebar-content::-webkit-scrollbar {
@@ -88,74 +93,119 @@
 .level-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-
-  padding: 8px;
-  border-radius: 10px;
-
-  font-size: 12px;
-  color: #e5e7eb;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #94a3b8;
   cursor: pointer;
-  border: 1px solid #111827;
-
-  background: linear-gradient(140deg, #0b1120, #020617);
-
+  border: 1px solid transparent;
+  background: transparent;
+  margin-bottom: 2px;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
-
-  transition: 0.2s ease;
+  transition: all 0.2s ease;
 }
 
-.level-item:hover {
-  border-color: #22d3ee;
-  background: #1e293b;
-}
-
+/* Active State */
 .level-item.active {
-  background: #312e81;
-  border-color: #818cf8;
-  box-shadow: 0 0 18px rgba(99,102,241,0.35);
+  background: #1e293b;
+  border-color: #38bdf8;
+  color: #f8fafc;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.1);
 }
 
-/* Compact center align when collapsed */
+/* Hover State */
+.level-item:hover:not(.locked) {
+  background: #0f172a;
+  color: #f1f5f9;
+}
+
 .level-sidebar.closed .level-item {
   justify-content: center;
+  padding-left: 0;
+  padding-right: 0;
 }
 
-/* Numbers + Icons */
-.level-id {
-  color: #60a5fa;
-  font-weight: 600;
+/* Icons/States */
+.level-id { 
+  font-weight: 700; 
+  color: #475569; 
+  min-width: 20px;
+}
+.level-item.active .level-id { color: #38bdf8; }
+
+.level-name { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+
+.level-item.locked { opacity: 0.5; cursor: not-allowed; }
+.lock-icon { font-size: 10px; color: #ef4444; margin-left: auto; }
+.unlock-icon { font-size: 10px; color: #22c55e; margin-left: auto; }
+
+/* ===========================
+   🔥 MOBILE RESPONSIVENESS (The Fix)
+=========================== */
+@media (max-width: 1024px) {
+  
+  /* 1. Sidebar becomes a sliding drawer */
+  .level-sidebar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    height: 100%;
+    box-shadow: 5px 0 25px rgba(0, 0, 0, 0.5);
+  }
+
+  /* 2. When OPEN: It covers 80% of screen (max 300px) */
+  .level-sidebar.open {
+    width: 85vw;
+    max-width: 300px;
+    transform: translateX(0);
+  }
+
+  /* 3. When CLOSED: It slides completely off-screen */
+  .level-sidebar.closed {
+    width: 0;
+    min-width: 0;
+    padding: 0;
+    border: none;
+    transform: translateX(-100%);
+  }
 }
 
-.done {
-  color: #22c55e;
-  margin-left: auto;
+/* ===========================
+   🔥 FLOATING TRIGGER (Add this button in your JSX)
+   This button appears ONLY when sidebar is closed on mobile
+=========================== */
+.mobile-sidebar-trigger {
+  display: none; /* Hidden on Desktop */
 }
 
-/* Empty / loading */
-.empty-msg {
-  padding: 12px;
-  font-size: 12px;
-  color: #94a3b8;
-}
+@media (max-width: 1024px) {
+  .mobile-sidebar-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    position: absolute;
+    top: 80px; /* Adjust based on your TopBar height */
+    left: 0;
+    z-index: 900; /* Below sidebar, above game */
+    
+    width: 40px;
+    height: 40px;
+    
+    background: #020617;
+    border: 1px solid #1e293b;
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    color: #38bdf8;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    cursor: pointer;
+  }
 
-.level-item.locked {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
-
-.level-item.unlocked {
-  cursor: pointer;
-}
-
-.lock-icon {
-  color: red;
-  margin-left: auto;
-}
-
-.unlock-icon {
-  color: green;
-  margin-left: auto;
+  /* Hide the trigger if the sidebar is open (cleaner UI) */
+  body:has(.level-sidebar.open) .mobile-sidebar-trigger {
+    display: none;
+  }
 }

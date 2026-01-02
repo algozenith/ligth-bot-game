@@ -1,40 +1,55 @@
-/* =========================================
-   RIGHT SIDEBAR — Final Premium Layout FIXED
-========================================= */
+/* src/components/RightSide/RightSidebar/RightSidebar.css */
+
+/* --- 1. DESKTOP (Default) --- */
 .right-sidebar {
   flex: 0 0 330px;
   max-width: 330px;
   min-width: 300px;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
-  gap: 4.8px;
-
+  gap: 6px;
   padding: 10px;
+
   background: rgba(8, 12, 22, 0.96);
   border-left: 1px solid rgba(50, 60, 85, 0.5);
-  backdrop-filter: blur(6px);
+  backdrop-filter: blur(10px);
 
-  height: 100%;
-  min-height: 0;
-  overflow: hidden;
+  /* 🔒 STOP SCROLLING HERE */
+  overflow: hidden; 
 }
 
-/* MAIN slightly smaller */
-.right-sidebar > :nth-child(1) {
-  flex: 3; /* was 4 */
-  min-height: 0;
-}
+/* Vertical sizing for Desktop */
+.right-sidebar > :nth-child(1) { flex: 3; min-height: 0; } /* MAIN */
+.right-sidebar > :nth-child(2) { flex: 2; min-height: 0; } /* F1 */
+.right-sidebar > :nth-child(3) { flex: 2; min-height: 0; } /* F2 */
+.right-sidebar > :nth-child(4) { flex: 1.5; min-height: 0; } /* TOOLS */
 
-/* M1 & M2 optimized equally */
-.right-sidebar > :nth-child(2),
-.right-sidebar > :nth-child(3) {
-  flex: 2; /* was 2.5 */
-  min-height: 0;
-}
 
-/* Commands row now taller */
-.right-sidebar > :nth-child(4) {
-  flex: 2; /* was 1 */
-  min-height: 0;
+/* --- 2. TABLET / MOBILE (The 2x2 Grid) --- */
+@media (max-width: 960px) {
+  .right-sidebar {
+    /* Reset Desktop constraints */
+    flex: 0 0 50%;
+    max-width: 100%;
+    width: 100%;
+    border-left: none;
+    
+    /* 2x2 Grid */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 6px;
+    padding: 6px;
+  }
+
+  /* Force children to fill the grid cells exactly */
+  .right-sidebar > * {
+    flex: none !important; 
+    width: 100%;
+    height: 100%;
+    min-height: 0; /* Crucial for grid shrinking */
+    overflow: hidden;
+  }
 }

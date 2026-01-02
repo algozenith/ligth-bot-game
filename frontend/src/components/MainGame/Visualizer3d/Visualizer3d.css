@@ -1,162 +1,119 @@
 /* =========================================================================
-   🧊 3D Visualizer — Dark Neon Cyber Theme
-   Perfectly matching your updated 2D mode ⚡
+   🧊 3D Visualizer — Deep Slate Tech Theme
+   Optimized for Depth Perception & Shadow Visibility
 =========================================================================== */
 
+/* 1. Main Panel */
 .visualizer-3d-panel {
   width: 100%;
   height: 100%;
+  min-height: 400px;
   position: relative;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 
-  background: linear-gradient(145deg, #030712 0%, #0a0f1f 45%, #111827 100%);
-  border-radius: 18px;
-  padding: 8px;
-  border: 1px solid rgba(148,163,184,0.12);
-
-  box-shadow:
-    0 6px 26px rgba(0,0,0,0.6),
-    inset 0 0 14px rgba(29,50,92,0.25);
+  /* BACKGROUND CHANGE: 
+     Instead of pitch black, we use a "Deep Slate" Radial Gradient.
+     This creates a spotlight effect behind the board.
+     Crucially, it is light enough (#1e293b) that the black shadows 
+     from your tiles will actually be visible! */
+  background: radial-gradient(circle at center, #334155 0%, #1e293b 60%, #0f172a 100%);
+  
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  
+  /* Inner shadow gives the panel depth, like it's inset into the page */
+  box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.5);
+  
+  user-select: none;
+  transition: all 0.3s ease;
 }
 
-/* R3F Canvas frame */
+/* 2. Canvas Wrapper */
 .visualizer-3d-canvas-wrapper {
   flex: 1;
   width: 100%;
-  overflow: hidden;
+  height: 100%;
   position: relative;
-
-  border-radius: 16px;
-  border: 1px solid rgba(59,130,246,0.25);
-
-  background: rgba(4, 10, 25, 0.92);
-  backdrop-filter: blur(4px);
-
-  box-shadow:
-    0 0 18px rgba(0,0,0,0.55),
-    inset 0 0 24px rgba(59,130,246,0.08);
+  
+  /* Indicates interactivity */
+  cursor: grab;
 }
 
-/* =========================================================================
-   🌀 Teleport Mode Banner — Blue glow alert
-=========================================================================== */
-.tp-banner {
-  position: absolute;
-  top: 14px;
-  left: 50%;
-  z-index: 99;
-  transform: translateX(-50%);
-
-  padding: 5px 14px;
-  font-size: 13px;
-  font-weight: 700;
-  color: #e0f2fe;
-  text-shadow: 0 0 8px rgba(56,189,248,0.9);
-
-  background: rgba(2, 132, 199, 0.22);
-  backdrop-filter: blur(6px);
-  border-radius: 6px;
-  border: 1px solid rgba(3,105,161,0.65);
-
-  animation: tpPulse 1.1s infinite alternate ease-in-out;
-}
-
-@keyframes tpPulse {
-  0% { box-shadow: 0 0 10px rgba(56,189,248,0.3); }
-  100% { box-shadow: 0 0 25px rgba(56,189,248,0.8); }
-}
-
-/* =========================================================================
-   ✋ Pointer behavior for editing
-=========================================================================== */
-.visualizer-3d-panel canvas {
-  cursor: pointer;
-}
-
-.visualizer-3d-panel canvas:active {
+.visualizer-3d-canvas-wrapper:active {
   cursor: grabbing;
 }
 
 /* =========================================================================
-   💡 Smooth transitions for interactive feeling
+   🌀 Teleport Banner — Glassmorphism Style
 =========================================================================== */
-.visualizer-3d-panel,
-.visualizer-3d-canvas-wrapper {
-  transition: box-shadow 0.4s ease, background 0.4s ease;
-}
-.tp-banner-v2 {
+
+/* Consolidating .tp-banner and .tp-banner-v2 into one clean class. 
+   Ensure your React component uses className="tp-banner" */
+.tp-banner {
   position: absolute;
-  top: 20px;
+  top: 24px;
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(15, 23, 42, 0.9);
-  color: #fff;
-  padding: 10px 30px;
-  border-radius: 20px;
-  font-weight: 500;
-  pointer-events: none;
-  z-index: 10;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  z-index: 50; /* Above canvas */
+  
+  /* Layout */
   display: flex;
   align-items: center;
-}
-
-.tp-banner-v2.pending {
-  border: 2px solid #38bdf8; /* Entry Portal Color */
-}
-
-.tp-banner-v2 span {
-    font-weight: bold;
-    margin-right: 10px;
-}
-.visualizer-3d-panel {
-    /* Main container for the canvas and overlays */
-    width: 100%;
-    height: 100%;
-    min-height: 400px;
-    position: relative;
-    overflow: hidden;
-}
-
-.visualizer-3d-canvas-wrapper {
-    width: 100%;
-    height: 100%;
-}
-
-.tp-banner-v2 {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(15, 23, 42, 0.9);
-  color: #fff;
-  padding: 10px 30px;
-  border-radius: 20px;
+  gap: 10px;
+  padding: 10px 24px;
+  
+  /* Glass Effect */
+  background: rgba(15, 23, 42, 0.75); /* Semi-transparent dark blue */
+  backdrop-filter: blur(8px);         /* Blurs the tiles behind it */
+  border: 1px solid rgba(56, 189, 248, 0.3); /* Subtle blue border */
+  border-radius: 999px;               /* Pill shape */
+  
+  /* Typography */
+  color: #e0f2fe;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
   font-weight: 500;
-  pointer-events: none;
-  z-index: 10;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-  display: flex;
-  align-items: center;
-  user-select: none;
+  letter-spacing: 0.5px;
+  
+  /* Feel */
+  pointer-events: none; /* Clicks go through to the board */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  
+  /* Animation */
+  animation: slideInFloat 0.5s ease-out forwards;
 }
 
-.tp-banner-v2.pending {
-  border: 2px solid #38bdf8; /* Matches ENTRY_PORTAL color */
-  animation: pulse-border 1.5s infinite alternate;
+/* If the banner is in "Pending" mode (waiting for click) */
+.tp-banner.pending {
+  border-color: #38bdf8;
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.25);
+  animation: pulse-border 2s infinite alternate;
 }
 
-.tp-banner-v2 span {
-    font-weight: bold;
-    margin-right: 10px;
+/* =========================================================================
+   ✨ Animations
+=========================================================================== */
+
+@keyframes slideInFloat {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
 }
 
 @keyframes pulse-border {
-    from {
-        box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
-    }
-    to {
-        box-shadow: 0 0 20px rgba(56, 189, 248, 1);
-    }
+  0% {
+    box-shadow: 0 0 0 rgba(56, 189, 248, 0);
+    border-color: rgba(56, 189, 248, 0.3);
+  }
+  100% {
+    box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+    border-color: rgba(56, 189, 248, 0.8);
+  }
 }

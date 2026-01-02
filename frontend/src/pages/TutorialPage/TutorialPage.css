@@ -229,3 +229,47 @@
 .curtain-left, .curtain-right { /* inner padding for a softer edge */
   padding: 0.6rem 0;
 }
+
+/* src/pages/TutorialPage/TutorialPage.css */
+
+.app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh; /* Mobile viewport fix */
+  overflow: hidden;
+  background-color: #020617;
+}
+
+/* --- DESKTOP (Default) --- */
+.app-main {
+  flex: 1;
+  display: flex;
+  flex-direction: row; /* Side-by-Side */
+  overflow: hidden; 
+  position: relative;
+}
+
+.visualizer-wrapper {
+  flex: 1;
+  position: relative;
+  background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+}
+
+/* --- TABLET / MOBILE ( < 960px ) --- */
+/* This triggers the layout change */
+@media (max-width: 960px) {
+  .app-main {
+    flex-direction: column; /* Stack vertically */
+  }
+
+  .visualizer-wrapper {
+    flex: 1; /* Takes top half */
+    min-height: 40vh; /* Ensure visualizer is big enough */
+    border-bottom: 1px solid rgba(50, 60, 85, 0.5);
+  }
+}

@@ -1,3 +1,4 @@
+import React from "react";
 import "./BottomBar.css";
 
 export default function BottomBar({
@@ -13,12 +14,13 @@ export default function BottomBar({
   showSave = false,
   onSave,
   onSubmit,
-  onOpenInstructions, // NEW PROP
+  onOpenInstructions,
 }) {
   const toggleView = () => setUse3D(!use3D);
 
   return (
     <div className="bottombar">
+      {/* Message: Hidden on mobile via CSS */}
       <div className="bottombar-message">
         {message || "Ready"}
       </div>
@@ -36,57 +38,60 @@ export default function BottomBar({
             <option value={10200}>Slow</option>
             <option value={500}>Normal</option>
             <option value={150}>Fast</option>
-            <option value={50}>Lightning ⚡</option>
+            <option value={50}>⚡</option>
           </select>
         </div>
 
-        {/* Toggle View Button */}
+        {/* Toggle View */}
         <button
-          className={`btn-main view-toggle-btn ${
-            use3D ? "view-on" : "view-off"
-          }`}
-          disabled={false}
+          className={`btn-main view-toggle-btn ${use3D ? "view-on" : "view-off"}`}
           onClick={toggleView}
         >
-          {use3D ? "2D View 🟦" : "3D View ✨"}
+          {use3D ? (
+             <>
+               <span className="btn-label">2D View</span> 🟦
+             </>
+          ) : (
+             <>
+               <span className="btn-label">3D View</span> ✨
+             </>
+          )}
         </button>
 
-        {/* NEW How to Play Button */}
-        <button
-          className="btn-main info-btn"
-          onClick={onOpenInstructions}
-        >
-          ℹ How to Play
+        {/* Instructions */}
+        <button className="btn-main info-btn" onClick={onOpenInstructions}>
+          ℹ <span className="btn-label">Help</span>
         </button>
 
-        {/* Reset always allowed */}
+        {/* Save */}
+        {showSave && (
+          <button className="btn-main save-btn" onClick={onSave}>
+            💾 <span className="btn-label">Save</span>
+          </button>
+        )}
+
+        {/* Reset */}
         <button className="btn-main reset-btn" onClick={onReset}>
-          ⟲ Reset
+          ⟲ <span className="btn-label">Reset</span>
         </button>
 
-        {/* Run always shown */}
+        {/* Run (Most important) */}
         <button
           className="btn-main run-btn"
           disabled={isRunning}
           onClick={onRun}
         >
-          ▶ Run
+          ▶ <span className="btn-label">Run</span>
         </button>
 
-        {/* Optional save/submit */}
-        {showSave && (
-          <button className="btn-main save-btn" onClick={onSave}>
-            💾 Save
-          </button>
-        )}
-
+        {/* Submit */}
         {showSubmit && (
           <button
             className="btn-main submit-btn"
             disabled={isRunning}
             onClick={onSubmit}
           >
-            ⭐ Submit
+            ⭐ <span className="btn-label">Submit</span>
           </button>
         )}
       </div>

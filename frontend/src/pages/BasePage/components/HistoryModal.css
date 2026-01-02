@@ -1,0 +1,220 @@
+/* =========================================
+   HISTORY MODAL & CARD STYLES
+   ========================================= */
+
+/* --- MODAL CONTAINER --- */
+.base-page-root .history-modal-content {
+  background: #15151a; 
+  border: 1px solid #333; 
+  width: 1400px; 
+  max-width: 95vw; 
+  height: 85vh;
+  border-radius: 12px; 
+  display: flex; 
+  flex-direction: column; 
+  overflow: hidden;
+  box-shadow: 0 30px 80px rgba(0,0,0,0.9); 
+  animation: bp-scaleIn 0.3s ease;
+}
+
+.base-page-root .history-modal-header {
+  background: #1e1e24; 
+  padding: 15px 25px; 
+  display: flex; 
+  justify-content: space-between;
+  align-items: center; 
+  border-bottom: 1px solid var(--accent-purple); 
+  z-index: 5;
+  flex-shrink: 0;
+}
+
+.base-page-root .history-modal-title {
+  color: #fff; font-size: 1.1rem; text-transform: uppercase; margin: 0;
+}
+
+.base-page-root .history-grid-container {
+  padding: 25px; 
+  overflow-y: auto; 
+  display: grid;
+  /* Desktop: Min 250px width per card */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+  gap: 20px;
+  background: #0d0d12;
+}
+
+.base-page-root .no-drafts {
+  color: #666; width: 100%; text-align: center; grid-column: 1 / -1; margin-top: 50px;
+}
+
+/* --- HISTORY CARD (DESKTOP BASE) --- */
+.base-page-root .history-card {
+  background: rgba(30, 30, 40, 0.6); 
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px; 
+  overflow: hidden; 
+  display: flex; 
+  flex-direction: column;
+  
+  /* Desktop Height: 350px */
+  height: 350px; 
+  
+  position: relative; 
+  transition: all 0.3s ease; 
+  backdrop-filter: blur(10px);
+}
+
+.base-page-root .history-card:hover { 
+  border-color: var(--accent-purple); 
+  transform: translateY(-5px); 
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5); 
+}
+
+/* --- VISUALIZER FRAME --- */
+.base-page-root .history-viz-frame {
+  /* Desktop Ratio: ~52% of card */
+  height: 180px; 
+  width: 100%; 
+  background: radial-gradient(circle at center, #1a1a25 0%, #050508 100%);
+  position: relative; 
+  border-bottom: 1px solid rgba(108, 92, 231, 0.2);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.base-page-root .viz-inner-container {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 0;
+}
+
+.base-page-root .viz-loading-placeholder {
+  color: #555; font-size: 0.8rem; font-family: monospace;
+}
+
+/* Toggle Button */
+.base-page-root .card-viz-toggle {
+  position: absolute; top: 10px; right: 10px; z-index: 10;
+  background: rgba(0,0,0,0.6); color: #fff; border: 1px solid #444;
+  font-size: 0.65rem; padding: 3px 8px; border-radius: 4px; cursor: pointer;
+}
+.base-page-root .card-viz-toggle:hover { background: var(--accent-purple); border-color: var(--accent-purple); }
+
+/* --- INFO SECTION --- */
+.base-page-root .history-card-info { 
+  padding: 12px; 
+  flex: 1; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 6px; 
+  overflow: hidden; 
+}
+
+.base-page-root .history-card-header { 
+  width: 100%; display: flex; flex-direction: column; overflow: hidden; 
+}
+
+.base-page-root .history-card-title-row { 
+  display: flex; align-items: center; justify-content: space-between; width: 100%; gap: 10px; 
+}
+
+.base-page-root .history-card-title {
+  flex: 1; min-width: 0; 
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 0.9rem; font-weight: 700; color: #fff; display: block;
+}
+
+.base-page-root .btn-edit-name-trigger {
+  background: none; border: none; cursor: pointer; opacity: 0.5; transition: 0.2s; font-size: 0.9rem;
+}
+.base-page-root .btn-edit-name-trigger:hover { opacity: 1; }
+
+.base-page-root .history-card-meta {
+  font-size: 0.7rem; color: #888; font-family: monospace; margin-top: 2px;
+}
+
+/* Edit Name Inputs */
+.base-page-root .history-name-edit-group { display: flex; gap: 5px; width: 100%; }
+.base-page-root .history-name-input { 
+  flex: 1; background: #222; border: 1px solid var(--accent-purple); color: #fff; font-size: 0.8rem; padding: 2px 5px;
+}
+.base-page-root .btn-save-name, .base-page-root .btn-cancel-name {
+  background: #333; border: 1px solid #555; color: #fff; cursor: pointer; padding: 0 6px;
+}
+.base-page-root .btn-save-name:hover { background: #2ecc71; border-color: #2ecc71; }
+.base-page-root .btn-cancel-name:hover { background: #e74c3c; border-color: #e74c3c; }
+
+/* Stats Pills */
+.base-page-root .history-card-stats { display: flex; gap: 6px; margin-top: 2px; flex-wrap: wrap; }
+.base-page-root .stat-pill {
+  font-size: 0.65rem; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; color: #aaa; border: 1px solid #333;
+}
+
+/* Restore Button */
+.base-page-root .btn-history-deploy {
+  margin-top: auto; width: 100%; padding: 8px; font-size: 0.8rem; font-weight: 700;
+  border-radius: 4px; background: rgba(108, 92, 231, 0.1); border: 1px solid var(--accent-purple);
+  color: var(--accent-purple); cursor: pointer; text-transform: uppercase; transition: 0.2s;
+}
+.base-page-root .btn-history-deploy:hover { 
+  background: var(--accent-purple); color: #fff; box-shadow: 0 0 15px rgba(108, 92, 231, 0.4);
+}
+
+
+/* =========================================
+   🔥 MOBILE RESPONSIVE SCALING 🔥
+   Scales everything down proportionally (< 768px)
+   ========================================= */
+@media (max-width: 768px) {
+  
+  .base-page-root .history-modal-content {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    max-width: 100vw;
+  }
+
+  .base-page-root .history-grid-container {
+    padding: 15px;
+    gap: 15px;
+    /* Adjust columns for mobile width */
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+  }
+
+  /* 1. SCALE DOWN CARD HEIGHT */
+  .base-page-root .history-card {
+    height: 280px; /* Reduced from 350px */
+  }
+
+  /* 2. SCALE DOWN VISUALIZER HEIGHT (~50% Ratio) */
+  .base-page-root .history-viz-frame {
+    height: 140px; /* Reduced from 180px */
+  }
+
+  /* 3. SCALE DOWN INTERNALS "ACCORDINGLY" */
+  .base-page-root .history-card-info {
+    padding: 10px;
+    gap: 4px;
+  }
+
+  .base-page-root .history-card-title {
+    font-size: 0.8rem; /* Smaller Title */
+  }
+
+  .base-page-root .history-card-meta {
+    font-size: 0.6rem;
+  }
+
+  .base-page-root .stat-pill {
+    padding: 2px 6px;
+    font-size: 0.6rem;
+  }
+
+  .base-page-root .btn-history-deploy {
+    padding: 6px;
+    font-size: 0.75rem;
+  }
+  
+  .base-page-root .card-viz-toggle {
+    top: 6px; right: 6px;
+    font-size: 0.55rem;
+    padding: 2px 6px;
+  }
+}

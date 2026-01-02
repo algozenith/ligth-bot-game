@@ -1,5 +1,6 @@
 import React from "react";
 import HistoryCard from "./HistoryCard";
+import "./HistoryModal.css";
 
 const HistoryModal = ({ isOpen, onClose, history, onRestore, onUpdateName }) => {
     if (!isOpen) return null;

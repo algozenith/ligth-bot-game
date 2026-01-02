@@ -4,6 +4,7 @@ import Visualizer from "../../../components/MainGame/Visualizer/Visualizer";
 import RightSidebar from "../../../components/RightSide/RightSidebar/RightSidebar";
 import BottomBar from "../../../components/BottomBar/BottomBar";
 import { MUSIC_OPTIONS } from "../utils/baseUtils";
+import "./EditMode.css";
 
 const EditMode = ({ 
     editorData, setEditorData, setMusicTrack, 
@@ -18,6 +19,7 @@ const EditMode = ({
             <div className="edit-main-column">
                 {/* TOP BAR */}
                 <div className="edit-top-bar">
+                    {/* LEFT: Level & Name */}
                     <div className="bar-left-group">
                         <div className="level-hud-badge" title="Your Current Architect Level">
                             <span className="level-hud-label">LVL</span>
@@ -33,6 +35,7 @@ const EditMode = ({
                         </div>
                     </div>
 
+                    {/* MIDDLE: Controls (Music & Grid) */}
                     <div className="bar-section controls">
                         <div className="control-group">
                             <label className="bar-label">MUSIC:</label>
@@ -67,9 +70,14 @@ const EditMode = ({
                         </div>
                     </div>
 
+                    {/* RIGHT: Actions */}
                     <div className="bar-section actions">
-                        <button onClick={onOpenDrafts} className="btn-bar-action">📂 Load</button>
-                        <button onClick={handleCancelEditing} className="btn-bar-action danger">Exit</button>
+                        <button onClick={onOpenDrafts} className="btn-drafts-load">
+                            <span>📂</span> Load
+                        </button>
+                        <button onClick={handleCancelEditing} className="btn-cancel-edit">
+                            Exit
+                        </button>
                     </div>
                 </div>
 
@@ -94,9 +102,12 @@ const EditMode = ({
                             userLevel={stats.level}
                         />
                     )}
+                    
+                    {/* The Command Palette */}
                     <RightSidebar {...game} />
                 </div>
 
+                {/* BOTTOM BAR (Play/Submit) */}
                 <div className="edit-bottom-bar-wrapper">
                     <BottomBar
                         currentLevel={editorData}
@@ -113,4 +124,5 @@ const EditMode = ({
         </div>
     );
 };
+
 export default EditMode;

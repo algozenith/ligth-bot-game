@@ -1,0 +1,276 @@
+/* =========================================
+   VIEW MODE STYLES (The Hangar)
+   ========================================= */
+
+/* --- MAIN WRAPPER --- */
+.base-page-root .view-mode-wrapper {
+  display: flex;
+  width: 95%; 
+  max-width: 1800px; 
+  height: 85%;
+  gap: 30px;
+  animation: bp-slideUpFade 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  min-height: 0; 
+  min-width: 0;
+}
+
+@keyframes bp-slideUpFade { 
+  from { opacity: 0; transform: translateY(30px); } 
+  to { opacity: 1; transform: translateY(0); } 
+}
+
+/* --- LEFT PANEL: VISUALIZER --- */
+.base-page-root .view-left-panel {
+  flex: 3; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  position: relative; 
+  min-width: 0;
+  /* Ensure it doesn't overflow parent in flex row */
+  height: 100%; 
+}
+
+.base-page-root .view-visualizer-card {
+  width: 100%; 
+  height: 100%;
+  background: #000; 
+  border: 1px solid #333; 
+  border-radius: 12px;
+  position: relative; 
+  overflow: hidden;
+  /* Tech Corner Cut */
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+  
+  /* Tier Specific Glow */
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 30px var(--bg-glow);
+}
+
+/* --- RIGHT PANEL: STATS --- */
+.base-page-root .view-right-panel {
+  flex: 1; 
+  min-width: 350px; 
+  /* Important: Desktop has hidden overflow to keep layout tight */
+  overflow-y: auto; 
+  overflow-x: hidden;
+  display: flex; 
+  flex-direction: column;
+  justify-content: center; 
+  padding: 40px;
+  
+  background: var(--bg-panel); 
+  backdrop-filter: var(--glass-blur);
+  border-radius: 12px; 
+  border: 1px solid var(--border-color);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3); 
+  position: relative;
+}
+
+/* Neon Side Line */
+.base-page-root .view-right-panel::before {
+  content: ""; 
+  position: absolute; 
+  top: 0; left: 0; width: 3px; height: 100%;
+  background: linear-gradient(to bottom, var(--primary), transparent);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+/* --- TYPOGRAPHY --- */
+.base-page-root .view-label {
+  color: var(--primary); 
+  font-size: 0.75rem; 
+  font-weight: 700;
+  text-transform: uppercase; 
+  letter-spacing: 3px; 
+  margin-bottom: 8px; 
+  opacity: 0.9;
+}
+
+.base-page-root .view-title {
+  width: 100%; max-width: 100%;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  display: block; line-height: 1.2; padding-bottom: 5px;
+  
+  font-size: 3rem; margin: 0 0 10px 0; font-weight: 800; text-transform: uppercase;
+  background: -webkit-linear-gradient(#fff, #999); 
+  background-clip: text; 
+  -webkit-text-fill-color: transparent;
+  
+  /* Dynamic Tier Color */
+  color: var(--accent); 
+  text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.6);
+}
+
+.base-page-root .view-subtitle {
+  width: 100%; max-width: 100%; 
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+  display: block;
+  
+  color: var(--text-muted); 
+  font-size: 1rem; 
+  font-style: italic; 
+  margin-bottom: 40px;
+  border-left: 2px solid #444; 
+  padding-left: 15px;
+}
+
+.base-page-root .view-level-indicator {
+  font-weight: 900; 
+  color: #fff; 
+  font-size: 1.2rem;
+}
+
+/* --- STATS GRID --- */
+.base-page-root .view-stat-grid { 
+  display: flex; gap: 15px; margin-bottom: 30px; 
+}
+
+.base-page-root .view-stat-box {
+  background: rgba(255, 255, 255, 0.02); 
+  padding: 15px 20px; 
+  border-radius: 6px; 
+  border: 1px solid var(--border-color); 
+  text-align: center; 
+  flex: 1; 
+  transition: all 0.3s ease;
+  
+  border-left: 2px solid var(--accent);
+  background: linear-gradient(90deg, var(--bg-glow) 0%, transparent 100%);
+}
+
+.base-page-root .view-stat-box:hover {
+  transform: translateY(-3px);
+  background: var(--bg-glow);
+}
+
+.base-page-root .view-stat-val { font-size: 1.6rem; font-weight: 700; color: #fff; display: block; }
+.base-page-root .view-stat-lbl { font-size: 0.7rem; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; display: block; }
+
+/* --- BUTTONS --- */
+
+/* 1. Modify (Primary) */
+.base-page-root .btn-modify {
+  width: 100%; padding: 16px; font-size: 1rem; font-weight: 700;
+  background: transparent; border: 1px solid var(--accent); color: var(--accent);
+  border-radius: 4px; cursor: pointer; text-transform: uppercase; letter-spacing: 1.5px;
+  margin-bottom: 12px; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: 0 4px 15px rgba(0, 195, 255, 0.3); position: relative; overflow: hidden;
+}
+
+.base-page-root .btn-modify:hover {
+  background: var(--accent); color: #000;
+  box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.4); transform: scale(1.02);
+}
+
+.base-page-root .btn-modify::after {
+  content: ""; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  transition: 0.5s;
+}
+.base-page-root .btn-modify:hover::after { left: 100%; }
+
+/* 2. History (Secondary - Scanline Effect) */
+.base-page-root .btn-history-view {
+  background: rgba(108, 92, 231, 0.05);
+  border: 1px solid rgba(108, 92, 231, 0.3);
+  color: var(--accent-purple);
+  padding: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.base-page-root .btn-history-view:hover {
+  background: rgba(108, 92, 231, 0.15);
+  border-color: var(--accent-purple);
+  color: #fff;
+  box-shadow: 0 0 20px rgba(108, 92, 231, 0.2);
+  transform: translateY(-2px);
+}
+
+/* 3. Return (Tertiary) */
+.base-page-root .btn-return {
+  background: transparent; border: 1px solid #444; color: #888;
+  padding: 12px; border-radius: 4px; cursor: pointer; font-size: 0.85rem;
+  transition: all 0.2s; width: 100%; text-transform: uppercase; letter-spacing: 1px;
+}
+.base-page-root .btn-return:hover { border-color: #fff; color: #fff; background: rgba(255,255,255,0.05); }
+
+
+/* =========================================
+   🔥 RESPONSIVE MEDIA QUERIES 🔥
+   ========================================= */
+
+/* Tablet & Mobile (< 1024px) */
+@media (max-width: 1024px) {
+  
+  .base-page-root .view-mode-wrapper { 
+    flex-direction: column; 
+    height: 100%; /* Fill screen */
+    width: 100%;
+    gap: 0; 
+    overflow-y: auto; /* Enable Scroll for whole page */
+    padding: 10px;
+  }
+
+  /* LEFT PANEL: 3D MAP */
+  .base-page-root .view-left-panel { 
+    flex: none; /* Don't flex, respect height */
+    width: 100%;
+    height: 45vh; /* Fixed height map on mobile */
+    margin-bottom: 10px;
+  }
+
+  /* RIGHT PANEL: CONTROLS */
+  .base-page-root .view-right-panel { 
+    flex: none; /* Allow it to grow based on content */
+    width: 100%; 
+    min-width: 0;
+    padding: 20px; 
+    height: auto; /* Auto height to fit buttons */
+    overflow: visible; /* Show shadows/glows */
+  }
+
+  /* Text Scaling */
+  .base-page-root .view-title { 
+    font-size: 2rem; 
+    white-space: normal; /* Allow wrap on mobile if needed */
+  }
+  
+  .base-page-root .view-subtitle {
+    font-size: 0.9rem;
+    white-space: normal;
+    margin-bottom: 20px;
+  }
+
+  /* Button Sizes */
+  .base-page-root .btn-modify,
+  .base-page-root .btn-history-view,
+  .base-page-root .btn-return {
+    padding: 12px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Small Phones (< 480px) */
+@media (max-width: 480px) {
+  .base-page-root .view-left-panel { 
+    height: 35vh; /* Even smaller map to give room for buttons */
+  }
+  
+  .base-page-root .view-right-panel {
+    padding: 15px;
+  }
+
+  .base-page-root .view-stat-val { font-size: 1.2rem; }
+  .base-page-root .view-level-indicator { font-size: 1rem; }
+}

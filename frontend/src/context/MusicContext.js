@@ -4,7 +4,7 @@ import { useAuth } from "./AuthContext";
 
 const MusicContext = createContext();
 
-const API_URL = "http://localhost:8000";
+const API_URL = process.env.REACT_APP_API_URL;
 
 export function MusicProvider({ children }) {
   const { token, isAuth } = useAuth();

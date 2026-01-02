@@ -1,4 +1,5 @@
 import React from "react";
+import "./DraftsModal.css";
 
 const DraftsModal = ({ isOpen, onClose, drafts, onLoad, onDelete }) => {
     if (!isOpen) return null;

@@ -7,11 +7,11 @@ import TileMenu from "../TileMenu/TileMenu";
 import Robot3D from "../../Robot3D/Robot3D";
 
 // --- Constants ---
-const COLOR_TILE_TOP = "#eceff4";      // grey
-const COLOR_TILE_SIDE = "#d8dee9";     // grey
-const COLOR_GOAL = "#ffe88a";          // yellow goal
-const COLOR_GOAL_LIT = "#8df07a";      // green goal
-const COLOR_ICE = "#a0e6ff";           // icy blue
+const COLOR_TILE_TOP = "#eceff4";      // Light grey (Keep top bright)
+const COLOR_TILE_SIDE = "#94a3b8";     // Medium Slate Grey (Softens contrast)
+const COLOR_GOAL = "#ffe88a";          // Yellow goal
+const COLOR_GOAL_LIT = "#8df07a";      // Green goal
+const COLOR_ICE = "#a0e6ff";           // Icy blue
 
 const BASE_TILE_HEIGHT = 0.4;
 const HEIGHT_STEP = 0.35;
@@ -360,16 +360,16 @@ function RobotDirectionArrow({ dir, y }) {
        <mesh>
          <shapeGeometry args={[arrowShape]} />
          <meshStandardMaterial
-            ref={matRef}
-            color="#00e5ff"    // Bright Cyan/Electric Blue
-            emissive="#00e5ff" // Glowing with same color
-            emissiveIntensity={0.8}
-            roughness={0.2}
-            metalness={0.3}
-            transparent={true}
-            opacity={0.9}
-            depthTest={false} // Ensure it renders on top of tile geometry
-            side={THREE.DoubleSide}
+           ref={matRef}
+           color="#00e5ff"    // Bright Cyan/Electric Blue
+           emissive="#00e5ff" // Glowing with same color
+           emissiveIntensity={0.8}
+           roughness={0.2}
+           metalness={0.3}
+           transparent={true}
+           opacity={0.9}
+           depthTest={false} // Ensure it renders on top of tile geometry
+           side={THREE.DoubleSide}
          />
        </mesh>
     </group>
@@ -405,13 +405,18 @@ function Tile3D({
   const worldX = x * tileSize;
   const worldZ = y * tileSize;
 
+  // Calculate total height to position top items
   const heightAbs = BASE_TILE_HEIGHT + HEIGHT_STEP * Math.max(0, h);
-  const sideHeight = heightAbs;
-  const topY = sideHeight;
+  
+  // The top is where the robot/items sit
+  const topY = heightAbs;
   const overlayY = topY + TOP_THICKNESS + ICE_OVERLAY_OFFSET;
 
   const topColor = isGoal ? (isGoalLit ? COLOR_GOAL_LIT : COLOR_GOAL) : COLOR_TILE_TOP;
   const sideColor = isGoal ? (isGoalLit ? "#7ed957" : "#e5c76b") : COLOR_TILE_SIDE;
+  
+  // CHANGE: Made edge color significantly darker for standard tiles (#1a202c is near black)
+  const edgeColor = isGoal ? "#333333" : "#1a202c";
 
   const hasEntryBadge = isTeleportEntry && teleportEntryIndex !== undefined;
   const exitIndices = teleportExitIndices || [];
@@ -438,18 +443,33 @@ function Tile3D({
       onContextMenu={(e) => e.preventDefault()}
       onPointerDown={(e) => e.stopPropagation()}
     >
-      {/* Body */}
-      <mesh position={[0, sideHeight / 2, 0]} onPointerDown={(e) => e.stopPropagation()}>
-        <boxGeometry args={[tileSize, sideHeight, tileSize]} />
+      {/* 1. BASE BLOCK (Height 0) */}
+      <mesh position={[0, BASE_TILE_HEIGHT / 2, 0]}>
+        <boxGeometry args={[tileSize, BASE_TILE_HEIGHT, tileSize]} />
         <meshStandardMaterial color={sideColor} roughness={0.7} />
-        <Edges color={isGoal ? "#333333" : "#111111"} />
+        {/* Outline for the base */}
+        <Edges color={edgeColor} threshold={15} />
       </mesh>
 
-      {/* Top Plate */}
-      <mesh position={[0, topY + TOP_THICKNESS / 2, 0]} onPointerDown={(e) => e.stopPropagation()}>
+      {/* 2. STACK BLOCKS (Height > 0) */}
+      {/* This loop creates 1 block per height unit, creating the "lines" */}
+      {Array.from({ length: Math.max(0, h) }).map((_, i) => (
+        <mesh 
+          key={i} 
+          position={[0, BASE_TILE_HEIGHT + (i * HEIGHT_STEP) + (HEIGHT_STEP / 2), 0]}
+        >
+          <boxGeometry args={[tileSize, HEIGHT_STEP, tileSize]} />
+          <meshStandardMaterial color={sideColor} roughness={0.7} />
+          {/* Outline for each stack level */}
+          <Edges color={edgeColor} threshold={15} />
+        </mesh>
+      ))}
+
+      {/* 3. Top Plate (The Cap) */}
+      <mesh position={[0, topY + TOP_THICKNESS / 2, 0]}>
         <boxGeometry args={[tileSize * 0.98, TOP_THICKNESS, tileSize * 0.98]} />
         <meshStandardMaterial color={topColor} roughness={0.9} />
-        <Edges color={isGoal ? "#333333" : "#111111"} />
+        <Edges color={edgeColor} threshold={15} />
       </mesh>
 
       {/* Goal Inlay */}
@@ -519,8 +539,8 @@ function Tile3D({
       {/* UPDATED ROBOT DIRECTION ARROW */}
       {isRobot && (
          <RobotDirectionArrow 
-            dir={drawRobotDir} 
-            y={topY + TOP_THICKNESS} 
+           dir={drawRobotDir} 
+           y={topY + TOP_THICKNESS} 
          />
       )}
 
@@ -533,6 +553,7 @@ function Tile3D({
         />
       )}
       
+      {/* Exit Badges */}
       {hasExitBadges && (
         <TeleportExitBadges
           y={topY + TOP_THICKNESS + TP_BADGE_OFFSET}
@@ -651,15 +672,18 @@ export default function Visualizer3D({
   const midX = (gridSize - 1) * tileSize * 0.5;
   const midZ = (gridSize - 1) * tileSize * 0.5;
   const isThinkMode = isEditable && !isRunning;
-
+  
   return (
     <div className="visualizer-3d-panel" ref={panelRef}>
       {pendingTpStart && <div className="tp-banner">Teleport: click a tile to set destination</div>}
 
       <div className="visualizer-3d-canvas-wrapper">
         <Canvas orthographic>
-          <ambientLight intensity={0.9} />
-          <directionalLight position={[6, 10, 4]} intensity={0.7} castShadow={false} />
+          <ambientLight intensity={0.6} />
+          <directionalLight 
+            position={[6, 10, 4]} 
+            intensity={0.55} 
+          />
           
           <AutoFitIsoCamera gridSize={gridSize} tileSize={tileSize} />
           
@@ -745,7 +769,7 @@ export default function Visualizer3D({
             onTileAction(menu.x, menu.y, action);
           }}
           onClose={() => setMenu(null)}
-          userLevel={userLevel} // ⬅ 2. PASS IT DOWN TO TILE MENU
+          userLevel={userLevel} 
         />
       )}
     </div>
