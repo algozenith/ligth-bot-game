@@ -8,7 +8,7 @@ export default function GoogleLoginButton() {
     <GoogleLogin
       onSuccess={async (credentialResponse) => {
         try {
-          const res = await fetch("http://localhost:8000/auth/google", {
+          const res = await fetch(`${process.env.REACT_APP_API_URL}/auth/google`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
