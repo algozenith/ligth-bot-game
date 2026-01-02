@@ -444,7 +444,7 @@ function Tile3D({
       onPointerDown={(e) => e.stopPropagation()}
     >
       {/* 1. BASE BLOCK (Height 0) */}
-      <mesh position={[0, BASE_TILE_HEIGHT / 2, 0]} castShadow receiveShadow>
+      <mesh position={[0, BASE_TILE_HEIGHT / 2, 0]}>
         <boxGeometry args={[tileSize, BASE_TILE_HEIGHT, tileSize]} />
         <meshStandardMaterial color={sideColor} roughness={0.7} />
         {/* Outline for the base */}
@@ -457,8 +457,6 @@ function Tile3D({
         <mesh 
           key={i} 
           position={[0, BASE_TILE_HEIGHT + (i * HEIGHT_STEP) + (HEIGHT_STEP / 2), 0]}
-          castShadow 
-          receiveShadow
         >
           <boxGeometry args={[tileSize, HEIGHT_STEP, tileSize]} />
           <meshStandardMaterial color={sideColor} roughness={0.7} />
@@ -468,7 +466,7 @@ function Tile3D({
       ))}
 
       {/* 3. Top Plate (The Cap) */}
-      <mesh position={[0, topY + TOP_THICKNESS / 2, 0]} receiveShadow>
+      <mesh position={[0, topY + TOP_THICKNESS / 2, 0]}>
         <boxGeometry args={[tileSize * 0.98, TOP_THICKNESS, tileSize * 0.98]} />
         <meshStandardMaterial color={topColor} roughness={0.9} />
         <Edges color={edgeColor} threshold={15} />
@@ -555,6 +553,7 @@ function Tile3D({
         />
       )}
       
+      {/* Exit Badges */}
       {hasExitBadges && (
         <TeleportExitBadges
           y={topY + TOP_THICKNESS + TP_BADGE_OFFSET}
@@ -674,28 +673,17 @@ export default function Visualizer3D({
   const midZ = (gridSize - 1) * tileSize * 0.5;
   const isThinkMode = isEditable && !isRunning;
   
-  // Calculate a shadow camera size based on grid to prevent clipping
-  const shadowCamSize = gridSize * tileSize * 1.2; 
-
   return (
     <div className="visualizer-3d-panel" ref={panelRef}>
       {pendingTpStart && <div className="tp-banner">Teleport: click a tile to set destination</div>}
 
       <div className="visualizer-3d-canvas-wrapper">
-        <Canvas orthographic shadows>
+        <Canvas orthographic>
           <ambientLight intensity={0.6} />
           <directionalLight 
             position={[6, 10, 4]} 
             intensity={0.55} 
-            castShadow
-            shadow-mapSize={[2048, 2048]} 
-            shadow-bias={-0.0005}
-          >
-             <orthographicCamera 
-              attach="shadow-camera" 
-              args={[-shadowCamSize, shadowCamSize, shadowCamSize, -shadowCamSize]} 
-            />
-          </directionalLight>
+          />
           
           <AutoFitIsoCamera gridSize={gridSize} tileSize={tileSize} />
           
@@ -712,7 +700,7 @@ export default function Visualizer3D({
           />
 
           {/* Board Base */}
-          <mesh position={[midX, -0.35, midZ]} receiveShadow>
+          <mesh position={[midX, -0.35, midZ]}>
             <boxGeometry args={[gridSize * tileSize + 3, 0.5, gridSize * tileSize + 3]} />
             <meshStandardMaterial color="#d8dee9" roughness={0.95} />
           </mesh>
