@@ -307,3 +307,159 @@
   .log-main-text { font-size: 0.8rem; }
   .log-icon { margin-right: 10px; font-size: 1rem; }
 }
+
+/* =========================================
+   🆕 NEW: LOADING SCREEN & UTILITIES
+   ========================================= */
+.loading-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: monospace;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  background-color: #050508;
+  color: #ff4d4d;
+  text-shadow: 0 0 10px rgba(255, 77, 77, 0.5);
+}
+
+/* Timer & Text Colors */
+.text-cyan { color: #00f2ff; }
+.text-purple { color: #bc13fe; }
+.text-red-alert { 
+  color: #ff0000; 
+  text-shadow: 0 0 5px red; 
+  animation: blink 1s infinite; 
+}
+
+/* =========================================
+   🆕 NEW: SHARED CUSTOM MODAL STYLES
+   (Used for Retreat & Connection Error)
+   ========================================= */
+.custom-modal-backdrop {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.2s ease-out;
+}
+
+.custom-modal-content {
+  background: #0d0d15;
+  width: 90%;
+  max-width: 450px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+  transform: scale(0.95);
+  animation: popIn 0.2s ease-out forwards;
+}
+
+.custom-modal-header {
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.custom-modal-header h3 {
+  margin: 0;
+  font-family: monospace;
+  letter-spacing: 2px;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.close-btn:hover { opacity: 1; }
+
+.custom-modal-body {
+  padding: 30px 25px;
+  text-align: center;
+}
+
+.modal-icon {
+  font-size: 3.5rem;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.custom-modal-body h4 {
+  color: #fff;
+  margin: 0 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.custom-modal-body p {
+  color: #aaa;
+  font-size: 0.95rem;
+  margin-bottom: 25px;
+  line-height: 1.5;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+}
+
+/* --- BUTTON STYLES --- */
+.btn-modal-action, .btn-modal-cancel {
+  flex: 1;
+  padding: 12px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s;
+}
+
+.btn-modal-cancel {
+  background: transparent;
+  color: #aaa;
+  border: 1px solid #444;
+}
+.btn-modal-cancel:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+/* =========================================
+   🆕 SPECIFIC VARIANTS
+   ========================================= */
+
+/* 1. Connection Error (Red Theme) */
+.error-modal { border: 1px solid #ff4d4d; box-shadow: 0 0 30px rgba(255, 77, 77, 0.15); }
+.error-header { background: rgba(255, 77, 77, 0.1); border-bottom: 1px solid #ff4d4d; }
+.error-header h3 { color: #ff4d4d; }
+.error-btn {
+  background: #ff4d4d; color: #000; border: none; width: 100%;
+}
+.error-btn:hover { background: #ff6666; transform: translateY(-1px); }
+
+
+/* 2. Tactical Retreat (Yellow Theme) */
+.retreat-modal { border: 1px solid #ffcc00; box-shadow: 0 0 30px rgba(255, 204, 0, 0.15); }
+.retreat-header { background: rgba(255, 204, 0, 0.1); border-bottom: 1px solid #ffcc00; }
+.retreat-header h3, .retreat-header .close-btn { color: #ffcc00; }
+.retreat-confirm-btn {
+  background: #ffcc00; color: #000; border: none;
+}
+.retreat-confirm-btn:hover { background: #ffe066; transform: translateY(-1px); }
+
+/* Animation Utility */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

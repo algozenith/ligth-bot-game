@@ -41,6 +41,12 @@ export default function AttackPage() {
     const [battleResult, setBattleResult] = useState(null); 
     const [showResultModal, setShowResultModal] = useState(false);
     
+    // Error / Init State
+    const [initError, setInitError] = useState(false);
+
+    // Retreat Modal State
+    const [showRetreatModal, setShowRetreatModal] = useState(false);
+
     // Timer State
     const [timeLeft, setTimeLeft] = useState(null); 
     
@@ -113,13 +119,12 @@ export default function AttackPage() {
                     }
                 } 
                 else {
-                    alert("Target not found or Attack Invalid!");
-                    navigate("/arena");
+                    if (isMounted) setInitError(true);
                 }
             } 
             catch (err) {
                 console.error("Attack Init Error:", err);
-                navigate("/arena");
+                if (isMounted) setInitError(true);
             } 
             finally {
                 if (isMounted) setLoading(false);
@@ -132,18 +137,17 @@ export default function AttackPage() {
         return () => {
             isMounted = false;
             if (token) {
-                // Fetch the logged-in user's base music preference
                 fetch(`${API_URL}/user/base`, {
                     headers: { Authorization: `Bearer ${token}` }
                 })
                 .then(res => res.json())
                 .then(data => {
                     const userTheme = data?.level?.music || "default_base";
-                    setMusicTrack(userTheme); // ✅ Revert to player's theme
+                    setMusicTrack(userTheme); 
                 })
                 .catch(err => {
                     console.warn("Could not restore user music", err);
-                    setMusicTrack("default_base"); // Fallback
+                    setMusicTrack("default_base"); 
                 });
             } else {
                 setMusicTrack("default_base");
@@ -183,7 +187,7 @@ export default function AttackPage() {
         }
     }, [timeLeft, loading]);
 
-    // --- 6. RESULT HANDLING (UPDATED FOR SERVER SYNC) ---
+    // --- 6. RESULT HANDLING ---
     const handleLocalBattleResult = async (isWin, steps, failureReason = null) => {
         if (isGameOverRef.current) return; 
         isGameOverRef.current = true;
@@ -201,7 +205,6 @@ export default function AttackPage() {
             coins = BASE_COIN_REWARD + Math.floor(totalScore / 50);
         }
 
-        // 1. Submit to Server
         const serverResponse = await submitBattleResult({
             win: isWin,
             score,
@@ -209,14 +212,13 @@ export default function AttackPage() {
             programs: programsRef.current || game.programs
         });
 
-        // 2. Use Server Data for XP (Anti-Farming Check)
         const finalXp = serverResponse?.gained_exp || 0;
 
         const resultObj = {
             win: isWin,
             score,
             coins,
-            xp: finalXp, // ✅ Uses true server value
+            xp: finalXp,
             timeBonus,
             stepsUsed: steps || 0,
             reason: failureReason
@@ -240,29 +242,30 @@ export default function AttackPage() {
                     isWin: resultData.win,
                     score: resultData.score,
                     coinsEarned: resultData.coins,
-                    // experienceEarned: Not sent anymore, server calculates it
                     timeRemaining: timeLeft || 0, 
                     replay_programs: resultData.programs,
                     level_snapshot: levelData 
                 })
             });
             if(res.ok) {
-                return await res.json(); // Returns { gained_exp: ..., new_level: ... }
+                return await res.json();
             }
         } catch (error) {
             console.error("Failed to report battle result", error);
         }
-        return { gained_exp: 0 }; // Fallback
+        return { gained_exp: 0 }; 
     };
 
-    const handleRetreat = () => {
-        if(window.confirm("Abort mission? This counts as a loss.")) {
-            handleLocalBattleResult(false, 0, "ABORTED");
-        }
+    // --- RETREAT ACTIONS ---
+    const handleRetreatClick = () => setShowRetreatModal(true);
+    
+    const confirmRetreat = () => {
+        setShowRetreatModal(false);
+        handleLocalBattleResult(false, 0, "ABORTED");
     };
 
-    if (loading) return <div className="loading-screen text-red">DECRYPTING FIREWALL...</div>;
-    if (!levelData) return null;
+    if (loading && !initError) return <div className="loading-screen text-red">DECRYPTING FIREWALL...</div>;
+    if (!levelData && !initError) return null;
 
     const timerColor = (timeLeft && timeLeft < 60) ? "text-red-alert" : "text-cyan";
 
@@ -282,17 +285,17 @@ export default function AttackPage() {
                     INTRUSION IN PROGRESS
                 </div>
                 
-                <div className={`timer-display ${timerColor}`} style={{ fontSize: '1.5rem', fontFamily: 'monospace', fontWeight: 'bold' }}>
+                <div className={`timer-display ${timerColor}`}>
                     T-MINUS: {formatTime(timeLeft)}
                 </div>
 
                 <div className="target-info">
                     <span className="target-label">TARGET:</span> 
-                    <span className="target-name">{username.toUpperCase()}</span>
+                    <span className="target-name">{username ? username.toUpperCase() : "UNKNOWN"}</span>
                 </div>
 
                 <div className="top-bar-actions">
-                    <button className="btn-retreat" onClick={handleRetreat}>ABORT MISSION</button>
+                    <button className="btn-retreat" onClick={handleRetreatClick}>ABORT MISSION</button>
                 </div>
             </div>
 
@@ -300,27 +303,27 @@ export default function AttackPage() {
                 <div className="attack-visualizer-wrapper">
                     {use3D ? (
                         <Visualizer3D
-                        robot={game.robot}
-                        lit={game.lit}
-                        level={game.currentLevel}
-                        isEditable={false}
-                        isRunning={game.isRunning}
-                        showStartWhenIdle={true}
-                        lastTeleportKey={game.lastTeleportKey}
-                        pendingTpStart={game.pendingTpStart}
-                        teleportFX={game.teleportFX}
+                            robot={game.robot}
+                            lit={game.lit}
+                            level={game.currentLevel}
+                            isEditable={false}
+                            isRunning={game.isRunning}
+                            showStartWhenIdle={true}
+                            lastTeleportKey={game.lastTeleportKey}
+                            pendingTpStart={game.pendingTpStart}
+                            teleportFX={game.teleportFX}
                         />
                     ) : (
                         <Visualizer
-                        robot={game.robot}
-                        lit={game.lit}
-                        level={game.currentLevel}
-                        isEditable={false}
-                        isRunning={game.isRunning}
-                        showStartWhenIdle={true}
-                        lastTeleportKey={game.lastTeleportKey}
-                        pendingTpStart={game.pendingTpStart}
-                        teleportFX={game.teleportFX}
+                            robot={game.robot}
+                            lit={game.lit}
+                            level={game.currentLevel}
+                            isEditable={false}
+                            isRunning={game.isRunning}
+                            showStartWhenIdle={true}
+                            lastTeleportKey={game.lastTeleportKey}
+                            pendingTpStart={game.pendingTpStart}
+                            teleportFX={game.teleportFX}
                         />
                     )}
                 </div>
@@ -346,12 +349,10 @@ export default function AttackPage() {
             </div>
 
             {showInstructions && (
-                <InstructionsPanel
-                mode="game"
-                onClose={() => setShowInstructions(false)}
-                />
+                <InstructionsPanel mode="game" onClose={() => setShowInstructions(false)} />
             )}
             
+            {/* --- RESULT MODAL --- */}
             {showResultModal && battleResult && (
                 <div className="battle-modal-overlay">
                     <div className={`battle-modal-content ${battleResult.win ? "win" : "loss"}`}>
@@ -360,7 +361,10 @@ export default function AttackPage() {
                         </h1>
                         
                         {!battleResult.win && battleResult.reason === "TIMEOUT" && (
-                            <h3 style={{color: '#ff4444', marginTop: '-10px'}}>FIREWALL LOCKDOWN (TIME UP)</h3>
+                            <h3 className="loss-reason">FIREWALL LOCKDOWN (TIME UP)</h3>
+                        )}
+                        {!battleResult.win && battleResult.reason === "ABORTED" && (
+                            <h3 className="loss-reason">MISSION ABORTED MANUALLY</h3>
                         )}
 
                         <div className="battle-stats">
@@ -384,7 +388,7 @@ export default function AttackPage() {
                                     </div>
                                     <div className="loot-row xp-row">
                                         <span className="label">Experience Gained:</span>
-                                        <span className="value text-purple" style={{color: '#bc13fe'}}>+{battleResult.xp} XP</span>
+                                        <span className="value text-purple xp-text">+{battleResult.xp} XP</span>
                                     </div>
                                 </>
                             ) : (
@@ -398,6 +402,51 @@ export default function AttackPage() {
                         <button className="btn-leave-arena" onClick={() => navigate("/arena")}>
                             RETURN TO BASE
                         </button>
+                    </div>
+                </div>
+            )}
+
+            {/* --- CONNECTION FAILED MODAL --- */}
+            {initError && (
+                <div className="custom-modal-backdrop">
+                    <div className="custom-modal-content error-modal">
+                        <div className="custom-modal-header error-header">
+                            <h3>⛔ CONNECTION FAILED</h3>
+                        </div>
+                        <div className="custom-modal-body">
+                            <div className="modal-icon">📡</div>
+                            <h4>Target System Unreachable</h4>
+                            <p>The coordinates for <strong>{username}</strong> could not be resolved or the system is offline.</p>
+                            <button className="btn-modal-action error-btn" onClick={() => navigate("/arena")}>
+                                Return to Arena
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* --- CONFIRM RETREAT MODAL --- */}
+            {showRetreatModal && (
+                <div className="custom-modal-backdrop">
+                    <div className="custom-modal-content retreat-modal">
+                        <div className="custom-modal-header retreat-header">
+                            <h3>⚠️ TACTICAL RETREAT</h3>
+                            <button onClick={() => setShowRetreatModal(false)} className="close-btn">✕</button>
+                        </div>
+                        <div className="custom-modal-body">
+                            <div className="modal-icon">🏳️</div>
+                            <h4>Confirm Abort?</h4>
+                            <p>Disconnecting from the target system now will result in a <strong>Battle Loss</strong>.</p>
+                            
+                            <div className="modal-actions">
+                                <button className="btn-modal-cancel" onClick={() => setShowRetreatModal(false)}>
+                                    Cancel
+                                </button>
+                                <button className="btn-modal-action retreat-confirm-btn" onClick={confirmRetreat}>
+                                    Confirm Abort
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
