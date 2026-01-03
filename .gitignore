@@ -7,10 +7,11 @@ backend/__pycache__/
 backend/*.pyc
 backend/venv/
 backend/.venv/
+backend/data/
+*.db
 
 # Docker
 docker-compose.override.yml
 
 # VS Code
 .vscode/
-backend/game.db
